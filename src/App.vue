@@ -1,23 +1,20 @@
 <template>
   <div id="app">
-    <form action="#" @submit.prevent="getIssues">
-      <div class="form-group">
-        <input
-            type="text"
-            placeholder="owner/repo Name"
-            v-model="repository"
-            class="col-md-2 col-md-offset-5"
-        >
-      </div>
-      <div id="my_dataviz"></div>
-      <div class="alert alert-info" v-show="loading">Loading...</div>
-      <div class="alert alert-danger" v-show="errored">An error occured</div>
-    </form>
+    <div>
+      <b-dropdown id="dropdown-1" text="Select File" class="m-md-2">
+        <b-dropdown-item v-for="file in files" :key="file" v-on:click="getIssues(file)">{{file}}</b-dropdown-item>
+      </b-dropdown>
+    </div>
+    <div id="my_dataviz"></div>
+    <div class="alert alert-info" v-show="loading">Loading...</div>
+    <div class="alert alert-danger" v-show="errored">An error occured</div>
   </div>
 </template>
 
 <script>
 import * as d3 from "d3";
+import axios from 'axios'
+
 
 export default {
   name: "app",
@@ -27,18 +24,23 @@ export default {
       loading: false,
       errored: false,
       repository: "",
-      startDate: null,
-      chart: null
+      fileSelection: "",
+      files: []
     };
   },
+  mounted: function () {
+    axios
+        .get('http://localhost:5000/api/v1/files')
+        .then(response => (this.files = response.data))
+  },
   methods: {
-    getIssues() {
+    getIssues(file) {
       this.loading = true;
       this.errored = false;
 
       d3.select("#my_dataviz").selectAll("svg").remove()
       //2_TwoNum.csv
-      d3.json("http://localhost:5000/api/v1/clusters/data/files/" + this.repository).then(function (data) {
+      d3.json("http://localhost:5000/api/v1/clusters/data/files/" + file).then(function (data) {
         var margin = {top: 10, right: 30, bottom: 30, left: 60},
             width = 1000 - margin.left - margin.right,
             height = 700 - margin.top - margin.bottom;
@@ -54,7 +56,7 @@ export default {
 
         // Add X axis
         var x = d3.scaleLinear()
-            .domain([0, 1])
+            .domain([0, data.max_X])
             .range([0, width]);
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
@@ -62,10 +64,13 @@ export default {
 
         // Add Y axis
         var y = d3.scaleLinear()
-            .domain([0, 1])
+            .domain([0, data.max_Y])
             .range([height, 0]);
         svg.append("g")
             .call(d3.axisLeft(y));
+
+        let col_map = {0: '#ff0000', 1: '#0013cd', 2: '#11ff00',
+          3: '#c45b00', 4:'#000000', 5:'#bb00ff', 6:'#15d6ff'}
 
         // Add dots
         svg.append('g')
@@ -80,11 +85,12 @@ export default {
               return y(d[1]);
             })
             .attr("r", 1.5)
-            .style("fill", "#ff0000")
+            .style("fill", function (d) {
+              return col_map[d[2]];
+            })
       })
           .catch(error => {
             this.errored = true;
-            this.chart = null;
             console.error(error);
           })
           .finally(() => (this.loading = false));
