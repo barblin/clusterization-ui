@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <div>
-      <b-dropdown id="dropdown-1" text="Select File" class="m-md-2">
+    <b-dropdown :text="viewSelection" class="m-md-2">
+      <b-dropdown-item v-for="view in views" :key="view" v-on:click="updateView(view)">{{view}}</b-dropdown-item>
+    </b-dropdown>
+      <b-dropdown :text="fileSelection" class="m-md-2">
         <b-dropdown-item v-for="file in files" :key="file" v-on:click="getIssues(file)">{{file}}</b-dropdown-item>
       </b-dropdown>
     </div>
@@ -24,23 +27,32 @@ export default {
       loading: false,
       errored: false,
       repository: "",
-      fileSelection: "",
-      files: []
+      fileSelection: "Select File",
+      viewSelection: "simple-plots",
+      files: [],
+      views: []
     };
   },
   mounted: function () {
     axios
         .get('http://localhost:5000/api/v1/files')
         .then(response => (this.files = response.data))
+    axios
+        .get('http://localhost:5000/api/v1/views')
+        .then(response => (this.views = response.data))
   },
   methods: {
+    updateView(view){
+      this.viewSelection = view
+    },
     getIssues(file) {
       this.loading = true;
       this.errored = false;
+      this.fileSelection = file;
 
       d3.select("#my_dataviz").selectAll("svg").remove()
       //2_TwoNum.csv
-      d3.json("http://localhost:5000/api/v1/clusters/data/files/" + file).then(function (data) {
+      d3.json("http://localhost:5000/api/v1/views/" + this.viewSelection + "/files/" + file).then(function (data) {
         var margin = {top: 10, right: 30, bottom: 30, left: 60},
             width = 1000 - margin.left - margin.right,
             height = 700 - margin.top - margin.bottom;
