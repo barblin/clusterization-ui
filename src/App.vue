@@ -1,31 +1,39 @@
 <template>
   <div id="app">
     <div>
-    <b-dropdown :text="viewSelection" class="m-md-2">
-      <b-dropdown-item v-for="view in views" :key="view" v-on:click="updateView(view)">{{view}}</b-dropdown-item>
-    </b-dropdown>
+      <b-dropdown :text="viewSelection" class="m-md-2">
+        <b-dropdown-item v-for="view in views" :value="view"
+                         @click="viewSelection = view; fileSelection = 'Select File'"
+                         :key="view">{{view}}</b-dropdown-item>
+      </b-dropdown>
       <b-dropdown :text="fileSelection" class="m-md-2">
-        <b-dropdown-item v-for="file in files" :key="file" v-on:click="getIssues(file)">{{file}}</b-dropdown-item>
+        <b-dropdown-item v-for="file in files" :key="file"
+                         @click="fileSelection = file">{{file}}</b-dropdown-item>
       </b-dropdown>
     </div>
-    <div id="my_dataviz"></div>
-    <div class="alert alert-info" v-show="loading">Loading...</div>
-    <div class="alert alert-danger" v-show="errored">An error occured</div>
+    <!--<stop-watch></stop-watch>-->
+    <simple-plot v-if="viewSelection == 'simple-plots' || viewSelection == 'clusters'" :fileSelection="fileSelection"
+                 :viewSelection="viewSelection"></simple-plot>
+    <triangle-plot v-else-if="viewSelection == 'delaunay-triangulation'" :fileSelection="fileSelection"
+                   :viewSelection="viewSelection"></triangle-plot>
   </div>
 </template>
 
 <script>
-import * as d3 from "d3";
 import axios from 'axios'
+//import StopWatch from "@/components/StopWatch";
+import SimplePlot from "@/components/SimplePlot";
+import TriangulationPlot from "@/components/TriangulationPlot";
 
 
 export default {
   name: "app",
-  components: {},
+  components: {
+    'simple-plot': SimplePlot,
+    'triangle-plot': TriangulationPlot
+  },
   data() {
     return {
-      loading: false,
-      errored: false,
       repository: "",
       fileSelection: "Select File",
       viewSelection: "simple-plots",
@@ -42,70 +50,8 @@ export default {
         .then(response => (this.views = response.data))
   },
   methods: {
-    updateView(view){
-      this.viewSelection = view
-    },
-    getIssues(file) {
-      this.loading = true;
-      this.errored = false;
-      this.fileSelection = file;
-
-      d3.select("#my_dataviz").selectAll("svg").remove()
-      //2_TwoNum.csv
-      d3.json("http://localhost:5000/api/v1/views/" + this.viewSelection + "/files/" + file).then(function (data) {
-        var margin = {top: 10, right: 30, bottom: 30, left: 60},
-            width = 1000 - margin.left - margin.right,
-            height = 700 - margin.top - margin.bottom;
-
-// append the svg object to the body of the page
-        var svg = d3.select("#my_dataviz")
-            .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
-
-        // Add X axis
-        var x = d3.scaleLinear()
-            .domain([0, data.max_X])
-            .range([0, width]);
-        svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x));
-
-        // Add Y axis
-        var y = d3.scaleLinear()
-            .domain([0, data.max_Y])
-            .range([height, 0]);
-        svg.append("g")
-            .call(d3.axisLeft(y));
-
-        let col_map = {0: '#ff0000', 1: '#0013cd', 2: '#11ff00',
-          3: '#c45b00', 4:'#000000', 5:'#bb00ff', 6:'#15d6ff'}
-
-        // Add dots
-        svg.append('g')
-            .selectAll("dot")
-            .data(data.data)
-            .enter()
-            .append("circle")
-            .attr("cx", function (d) {
-              return x(d[0]);
-            })
-            .attr("cy", function (d) {
-              return y(d[1]);
-            })
-            .attr("r", 1.5)
-            .style("fill", function (d) {
-              return col_map[d[2]];
-            })
-      })
-          .catch(error => {
-            this.errored = true;
-            console.error(error);
-          })
-          .finally(() => (this.loading = false));
+    getIssues(file){
+      this.$refs.simplePlot.getIssues(file)
     }
   }
 };
