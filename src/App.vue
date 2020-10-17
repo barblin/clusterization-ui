@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div>
+    <div class="plot-menu">
       <b-dropdown :text="viewSelection" class="m-md-2">
         <b-dropdown-item v-for="view in views" :value="view"
                          @click="viewSelection = view; fileSelection = 'Select File'"
@@ -65,5 +65,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.plot-menu {
+  margin-top: -3rem;
 }
 </style>

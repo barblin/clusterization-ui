@@ -33,8 +33,8 @@ export default {
           + this.fileSelection).then(function (data) {
 
         var margin = {top: 10, right: 30, bottom: 30, left: 60},
-            width = 1000 - margin.left - margin.right,
-            height = 700 - margin.top - margin.bottom;
+            width = 1400 - margin.left - margin.right,
+            height = 800 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
         var svg = d3.select("#my_triangulation")
@@ -66,9 +66,11 @@ export default {
               x(d[2][0]) + ',' + y(d[2][1]) + ' ' +
               x(d[0][0]) + ',' + y(d[0][1]);
 
-          svg.append("polyline")
+          svg.append("polygon")
               .attr("points", trianglePoints)
-              .style('stroke', 'blue');
+              .style('fill', 'none')
+              .style('stroke', 'violet')
+              .style("stroke-width", 0.5);
 
         })
       })
@@ -87,7 +89,7 @@ export default {
 <style scoped>
 
 .simple-plot {
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
 </style>

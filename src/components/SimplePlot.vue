@@ -33,8 +33,8 @@ export default {
           + this.fileSelection).then(function (data) {
 
         var margin = {top: 10, right: 30, bottom: 30, left: 60},
-            width = 1000 - margin.left - margin.right,
-            height = 700 - margin.top - margin.bottom;
+            width = 1400 - margin.left - margin.right,
+            height = 800 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
         var svg = d3.select("#my_dataviz")
@@ -95,7 +95,7 @@ export default {
 <style scoped>
 
 .simple-plot {
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
 </style>
