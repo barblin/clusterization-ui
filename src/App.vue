@@ -16,6 +16,8 @@
                  :viewSelection="viewSelection"></simple-plot>
     <triangle-plot v-else-if="viewSelection == 'delaunay-triangulation'" :fileSelection="fileSelection"
                    :viewSelection="viewSelection"></triangle-plot>
+    <minimum-tree-plot v-else-if="viewSelection == 'minimum-spanning-tree'" :fileSelection="fileSelection"
+                   :viewSelection="viewSelection"></minimum-tree-plot>
   </div>
 </template>
 
@@ -24,13 +26,15 @@ import axios from 'axios'
 //import StopWatch from "@/components/StopWatch";
 import SimplePlot from "@/components/SimplePlot";
 import TriangulationPlot from "@/components/TriangulationPlot";
+import MinimumTreePlot from "@/components/MinimumTreePlot";
 
 
 export default {
   name: "app",
   components: {
     'simple-plot': SimplePlot,
-    'triangle-plot': TriangulationPlot
+    'triangle-plot': TriangulationPlot,
+    'minimum-tree-plot': MinimumTreePlot
   },
   data() {
     return {

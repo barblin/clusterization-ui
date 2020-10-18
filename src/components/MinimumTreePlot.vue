@@ -1,5 +1,5 @@
 <template>
-  <div id="my_triangulation" class="simple-plot">
+  <div id="my_minimum_tree" class="simple-plot">
     <div class="alert alert-info" v-show="loading">Loading...</div>
     <div class="alert alert-danger" v-show="errored">An error occured</div>
   </div>
@@ -9,7 +9,7 @@
 import * as d3 from "d3";
 
 export default {
-  name: "TriangulationPlot",
+  name: "MinimumTreePlot",
   props: ['fileSelection', 'viewSelection'],
   data() {
     return {
@@ -27,7 +27,7 @@ export default {
       this.loading = true;
       this.errored = false;
 
-      d3.select("#my_triangulation").selectAll("svg").remove()
+      d3.select("#my_minimum_tree").selectAll("svg").remove()
       //2_TwoNum.csv
       d3.json("http://localhost:5000/api/v1/views/" + this.viewSelection + "/files/"
           + this.fileSelection).then(function (data) {
@@ -37,7 +37,7 @@ export default {
             height = 800 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
-        var svg = d3.select("#my_triangulation")
+        var svg = d3.select("#my_minimum_tree")
             .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -62,8 +62,7 @@ export default {
 
         data.data.forEach(d => {
           let trianglePoints = x(d[0][0]) + ',' + y(d[0][1]) + ' ' +
-              x(d[1][0]) + ',' + y(d[1][1]) + ' ' +
-              x(d[2][0]) + ',' + y(d[2][1]);
+              x(d[1][0]) + ',' + y(d[1][1]);
 
           svg.append("polygon")
               .attr("points", trianglePoints)
