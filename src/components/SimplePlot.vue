@@ -60,8 +60,8 @@ export default {
         svg.append("g")
             .call(d3.axisLeft(y));
 
-        let col_map = {0: '#ff0000', 1: '#0013cd', 2: '#11ff00',
-          3: '#c45b00', 4:'#000000', 5:'#bb00ff', 6:'#15d6ff'}
+        let col_map = {0: '#a50026', 1: '#d73027', 2: '#f46d43',
+          3: '#fdae61', 4:'#886700', 5:'#ba01c3', 6:'#708f00', 7:'#a6d96a', 8:'#66bd63', 9:'#1a9850', 10:'#006837'}
 
         // Add dots
         svg.append('g')

@@ -61,8 +61,8 @@ export default {
             .call(d3.axisLeft(y));
 
         data.data.forEach(d => {
-          let trianglePoints = x(d[0][0]) + ',' + y(d[0][1]) + ' ' +
-              x(d[1][0]) + ',' + y(d[1][1]);
+          let trianglePoints = x(d[0].coords[0]) + ',' + y(d[0].coords[1]) + ' ' +
+              x(d[1].coords[0]) + ',' + y(d[1].coords[1]);
 
           svg.append("polygon")
               .attr("points", trianglePoints)

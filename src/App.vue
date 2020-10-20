@@ -12,7 +12,8 @@
       </b-dropdown>
     </div>
     <!--<stop-watch></stop-watch>-->
-    <simple-plot v-if="viewSelection == 'simple-plots' || viewSelection == 'clusters'" :fileSelection="fileSelection"
+    <simple-plot v-if="viewSelection == 'simple-plots' || viewSelection == 'clusters' ||
+                  viewSelection == 'clusters-min-tree-wasser'" :fileSelection="fileSelection"
                  :viewSelection="viewSelection"></simple-plot>
     <triangle-plot v-else-if="viewSelection == 'delaunay-triangulation'" :fileSelection="fileSelection"
                    :viewSelection="viewSelection"></triangle-plot>
@@ -69,10 +70,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 .plot-menu {
-  margin-top: -3rem;
+  margin-top: 1rem;
 }
 </style>
