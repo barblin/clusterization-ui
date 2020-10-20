@@ -16,7 +16,8 @@
                  :viewSelection="viewSelection"></simple-plot>
     <triangle-plot v-else-if="viewSelection == 'delaunay-triangulation'" :fileSelection="fileSelection"
                    :viewSelection="viewSelection"></triangle-plot>
-    <minimum-tree-plot v-else-if="viewSelection == 'minimum-spanning-tree'" :fileSelection="fileSelection"
+    <minimum-tree-plot v-else-if="viewSelection == 'minimum-spanning-tree' ||
+                    viewSelection == 'minimum-spanning-tree-wasser'" :fileSelection="fileSelection"
                    :viewSelection="viewSelection"></minimum-tree-plot>
   </div>
 </template>
