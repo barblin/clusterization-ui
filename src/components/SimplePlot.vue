@@ -1,8 +1,5 @@
 <template>
-  <div id="my_dataviz" class="simple-plot">
-    <div class="alert alert-info" v-show="loading">Loading...</div>
-    <div class="alert alert-danger" v-show="errored">An error occured</div>
-  </div>
+  <div id="my_dataviz" class="simple-plot"></div>
 </template>
 
 <script>
@@ -10,27 +7,20 @@ import * as d3 from "d3";
 
 export default {
   name: "SimplePlot",
-  props: ['fileSelection', 'viewSelection'],
-  data() {
-    return {
-      loading: false,
-      errored: false
-    }
-  },
-  watch: {
-    fileSelection: function () {
-      this.getIssues()
-    }
-  },
+  props: ['fileSel', 'viewSel', 'numClusters', 'wasserError', 'distError'],
   methods: {
     getIssues() {
-      this.loading = true;
-      this.errored = false;
+      this.$emit('loading', true)
+      this.$emit('errored', false)
+
+      let col_map = {0: '#a50026', 1: '#55ff28', 2: '#006251',
+        3: '#1f8bff', 4:'#886700', 5:'#ba01c3', 6:'#708f00', 7:'#a6d96a', 8:'#66bd63', 9:'#1a9850', 10:'#006837'}
 
       d3.select("#my_dataviz").selectAll("svg").remove()
       //2_TwoNum.csv
-      d3.json("http://localhost:5000/api/v1/views/" + this.viewSelection + "/files/"
-          + this.fileSelection).then(function (data) {
+      d3.json("http://localhost:5000/api/v1/views/" + this.viewSel + "/files/" + this.fileSel
+          + "?numClusters=" + this.numClusters + "&wasserError=" + this.wasserError + "&distError=" + this.distError)
+          .then(function (data) {
 
         var margin = {top: 10, right: 30, bottom: 30, left: 60},
             width = 1400 - margin.left - margin.right,
@@ -60,9 +50,6 @@ export default {
         svg.append("g")
             .call(d3.axisLeft(y));
 
-        let col_map = {0: '#a50026', 1: '#d73027', 2: '#f46d43',
-          3: '#fdae61', 4:'#886700', 5:'#ba01c3', 6:'#708f00', 7:'#a6d96a', 8:'#66bd63', 9:'#1a9850', 10:'#006837'}
-
         // Add dots
         svg.append('g')
             .selectAll("dot")
@@ -81,10 +68,12 @@ export default {
             })
       })
           .catch(error => {
-            this.errored = true;
+            this.$emit('errored', true)
             console.error(error);
           })
-          .finally(() => (this.loading = false));
+          .finally(() => (
+              this.$emit('loading', false)
+          ));
     }
 
   }

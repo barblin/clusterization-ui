@@ -1,63 +1,114 @@
 <template>
   <div id="app">
     <div class="plot-menu">
-      <b-dropdown :text="viewSelection" class="m-md-2">
-        <b-dropdown-item v-for="view in views" :value="view"
-                         @click="viewSelection = view; fileSelection = 'Select File'"
-                         :key="view">{{view}}</b-dropdown-item>
-      </b-dropdown>
-      <b-dropdown :text="fileSelection" class="m-md-2">
-        <b-dropdown-item v-for="file in files" :key="file"
-                         @click="fileSelection = file">{{file}}</b-dropdown-item>
-      </b-dropdown>
+      <view-file-selection :fileSel="fileSel" :viewSel="viewSel"
+                           @fileSelected="fileSelected" @viewSelected="viewSelected">
+      </view-file-selection>
+      <span v-if="isWasser() || isCluster()">
+        <clusters :numClusters="numClusters" @clusSelected="clusSelected"></clusters>
+          <sliders :wasserDist="wasserDist" :euclidDist="euclidDist" @wasserErrSelected="wasserErrSelected"
+                   @distErrSelected="distErrSelected"></sliders>
+      </span>
+      <button type="button" class="btn btn-primary" @click="plot">Plot</button>
     </div>
+
+    <div class="alert alert-info" v-show="loading">Loading...</div>
+    <div class="alert alert-danger" v-show="errored">An error occured</div>
+
     <!--<stop-watch></stop-watch>-->
-    <simple-plot v-if="viewSelection == 'simple-plots' || viewSelection == 'clusters' ||
-                  viewSelection == 'clusters-min-tree-wasser'" :fileSelection="fileSelection"
-                 :viewSelection="viewSelection"></simple-plot>
-    <triangle-plot v-else-if="viewSelection == 'delaunay-triangulation'" :fileSelection="fileSelection"
-                   :viewSelection="viewSelection"></triangle-plot>
-    <minimum-tree-plot v-else-if="viewSelection == 'minimum-spanning-tree' ||
-                    viewSelection == 'minimum-spanning-tree-wasser'" :fileSelection="fileSelection"
-                   :viewSelection="viewSelection"></minimum-tree-plot>
+    <simple-plot :fileSel="fileSel"
+                 :viewSel="viewSel"
+                 :numClusters="numClusters"
+                 :wasserError="wasserDist"
+                 :distError="euclidDist" @loading="setLoad" @errored="setError" ref="scatter">
+    </simple-plot>
+    <tri-plot :fileSel="fileSel" :viewSel="viewSel" @loading="setLoad" @errored="setError" ref="tri"></tri-plot>
+    <min-tree-plot :fileSel="fileSel"
+                   :viewSel="viewSel"
+                   :numClusters="numClusters"
+                   :wasserError="wasserDist"
+                   :distError="euclidDist" @loading="setLoad" @errored="setError" ref="tree">
+    </min-tree-plot>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
 //import StopWatch from "@/components/StopWatch";
 import SimplePlot from "@/components/SimplePlot";
 import TriangulationPlot from "@/components/TriangulationPlot";
 import MinimumTreePlot from "@/components/MinimumTreePlot";
-
+import Sliders from "@/components/controls/Sliders";
+import Clusters from "@/components/controls/Clusters";
+import ViewAndFileSelection from "@/components/controls/ViewAndFileSelection";
 
 export default {
   name: "app",
   components: {
     'simple-plot': SimplePlot,
-    'triangle-plot': TriangulationPlot,
-    'minimum-tree-plot': MinimumTreePlot
+    'tri-plot': TriangulationPlot,
+    'min-tree-plot': MinimumTreePlot,
+    'sliders': Sliders,
+    'clusters': Clusters,
+    'view-file-selection': ViewAndFileSelection
   },
   data() {
     return {
       repository: "",
-      fileSelection: "Select File",
-      viewSelection: "simple-plots",
-      files: [],
-      views: []
-    };
-  },
-  mounted: function () {
-    axios
-        .get('http://localhost:5000/api/v1/files')
-        .then(response => (this.files = response.data))
-    axios
-        .get('http://localhost:5000/api/v1/views')
-        .then(response => (this.views = response.data))
+      fileSel: "Select File",
+      viewSel: "simple-plots",
+      numClusters: 6,
+      wasserDist: 0.1,
+      euclidDist: 0.1,
+      loading: false,
+      errored: false
+      }
   },
   methods: {
-    getIssues(file){
-      this.$refs.simplePlot.getIssues(file)
+    isTree() {
+      return this.viewSel == 'minimum-spanning-tree' || this.viewSel == 'minimum-spanning-tree-wasser'
+    },
+    isWasser() {
+      return this.viewSel == 'clusters-min-tree-wasser' || this.viewSel == 'minimum-spanning-tree-wasser'
+    },
+    isScatter() {
+      return this.viewSel == 'simple-plots' || this.viewSel == 'clusters'
+          || this.viewSel == 'clusters-min-tree-wasser'
+    },
+    isDelaunay() {
+      return this.viewSel == 'delaunay-triangulation'
+    },
+    isCluster() {
+      return this.viewSel == 'clusters-min-tree-wasser'
+    },
+    fileSelected(file) {
+      this.fileSel = file
+    },
+    viewSelected(view) {
+      this.viewSel = view
+    },
+    clusSelected(comp){
+      this.numClusters = comp
+    },
+    wasserErrSelected(wasser){
+      this.wasserDist = wasser
+    },
+    distErrSelected(dist){
+      this.euclidDist = dist
+    },
+    setLoad(loading){
+      this.loading = loading
+    },
+    setError(errored){
+      this.errored = errored
+    },
+    plot() {
+      if(this.isScatter()) {
+        this.$refs.scatter.getIssues()
+      } else if(this.isDelaunay()){
+        this.$refs.tri.getIssues()
+      } else if (this.isTree()){
+        this.$refs.tree.getIssues()
+      }
     }
   }
 };

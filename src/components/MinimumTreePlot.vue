@@ -1,8 +1,5 @@
 <template>
-  <div id="my_minimum_tree" class="simple-plot">
-    <div class="alert alert-info" v-show="loading">Loading...</div>
-    <div class="alert alert-danger" v-show="errored">An error occured</div>
-  </div>
+  <div id="my_dataviz" class="simple-plot"></div>
 </template>
 
 <script>
@@ -10,34 +7,28 @@ import * as d3 from "d3";
 
 export default {
   name: "MinimumTreePlot",
-  props: ['fileSelection', 'viewSelection'],
+  props: ['fileSel', 'viewSel', 'numClusters', 'wasserError', 'distError'],
   data() {
     return {
-      loading: false,
-      errored: false
-    }
-  },
-  watch: {
-    fileSelection: function () {
-      this.getIssues()
     }
   },
   methods: {
     getIssues() {
-      this.loading = true;
-      this.errored = false;
+      this.$emit('loading', true)
+      this.$emit('errored', false)
 
-      d3.select("#my_minimum_tree").selectAll("svg").remove()
+      d3.select("#my_dataviz").selectAll("svg").remove()
       //2_TwoNum.csv
-      d3.json("http://localhost:5000/api/v1/views/" + this.viewSelection + "/files/"
-          + this.fileSelection).then(function (data) {
+      d3.json("http://localhost:5000/api/v1/views/" + this.viewSel + "/files/" + this.fileSel
+          + "?numClusters=" + this.numClusters + "&wasserError=" + this.wasserError + "&distError=" + this.distError)
+          .then(function (data) {
 
         var margin = {top: 10, right: 30, bottom: 30, left: 60},
             width = 1400 - margin.left - margin.right,
             height = 800 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
-        var svg = d3.select("#my_minimum_tree")
+        var svg = d3.select("#my_dataviz")
             .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -73,10 +64,12 @@ export default {
         })
       })
           .catch(error => {
-            this.errored = true;
+            this.$emit('errored', true)
             console.error(error);
           })
-          .finally(() => (this.loading = false));
+          .finally(() => (
+              this.$emit('loading', false)
+          ));
     }
 
   }
