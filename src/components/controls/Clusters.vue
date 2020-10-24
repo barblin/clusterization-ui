@@ -2,7 +2,7 @@
   <span>
     | Min clusters
     <b-dropdown :text="numClusters" class="m-md-2">
-      <b-dropdown-item v-for="n in 11" :key="n" @click="onClusSel(n)">{{ n }}</b-dropdown-item>
+      <b-dropdown-item v-for="n in 9" :key="n" @click="onClusSel(n)">{{ n }}</b-dropdown-item>
     </b-dropdown>
   </span>
 </template>

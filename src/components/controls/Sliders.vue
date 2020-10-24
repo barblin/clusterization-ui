@@ -1,22 +1,26 @@
 <template>
-  <span>
-      d(W): {{ wasserDist * 100 }} %
-      <input type="range" min="0.1" max="1" step="0.1" class="slider" v-model="wasserDist" id="wasser-dist">
-      d(E): {{ euclidDist * 100 }} %
-      <input type="range" min="0.1" max="1" step="0.1" class="slider" v-model="euclidDist" id="euclid-dist">
+  <span class="fixed">
+      <span class="slider-margin">
+        d(W): {{ Math.round(wasserDist * 100) }} %
+        <input type="range" min="0.01" max="1" step="0.01" class="slider" v-model="wasserDist" id="wasser-dist">
+      </span>
+      <span class="outlier-checkbox">
+          <input type="checkbox" class="form-check-input" id="outliers" v-model="checked">
+          <label class="form-check-label" for="outliers">Remove outliers</label>
+      </span>
     </span>
 </template>
 
 <script>
 export default {
   name: "sliders",
-  props: ['wasserDist', 'euclidDist'],
+  props: ['wasserDist', 'checked'],
   watch: {
     wasserDist: function (val) {
       this.$emit('wasserErrSelected', val)
     },
-    euclidDist: function (val) {
-      this.$emit('distErrSelected', val)
+    checked: function (val) {
+      this.$emit('checkedSelected', val)
     }
   },
 }
@@ -25,7 +29,7 @@ export default {
 <style scoped>
 .slider {
   -webkit-appearance: none;
-  width: 100px;
+  width: 300px;
   height: 15px;
   margin-left: 10px;
   margin-right: 20px;
@@ -54,5 +58,23 @@ export default {
   height: 25px;
   background: #4CAF50;
   cursor: pointer;
+}
+
+.outlier-checkbox {
+  margin-left: 30px;
+  margin-right: 20px;
+}
+
+.form-check-input {
+  margin-top: 18px;
+}
+
+.slider-margin {
+  margin-left: 30px;
+  margin-right: 10px;
+}
+
+.fixed {
+  position: relative;
 }
 </style>

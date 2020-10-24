@@ -7,19 +7,19 @@ import * as d3 from "d3";
 
 export default {
   name: "SimplePlot",
-  props: ['fileSel', 'viewSel', 'numClusters', 'wasserError', 'distError'],
+  props: ['fileSel', 'viewSel', 'numClusters', 'wasserError', 'checked'],
   methods: {
     getIssues() {
       this.$emit('loading', true)
       this.$emit('errored', false)
 
-      let col_map = {0: '#a50026', 1: '#55ff28', 2: '#006251',
-        3: '#1f8bff', 4:'#886700', 5:'#ba01c3', 6:'#708f00', 7:'#a6d96a', 8:'#66bd63', 9:'#1a9850', 10:'#006837'}
+      let col_map = {0: '#a6cee3', 1: '#1f78b4', 2: '#b2df8a',
+        3: '#33a02c', 4:'#fb9a99', 5:'#e31a1c', 6:'#fdbf6f', 7:'#ff7f00', 8:'#cab2d6'}
 
       d3.select("#my_dataviz").selectAll("svg").remove()
       //2_TwoNum.csv
       d3.json("http://localhost:5000/api/v1/views/" + this.viewSel + "/files/" + this.fileSel
-          + "?numClusters=" + this.numClusters + "&wasserError=" + this.wasserError + "&distError=" + this.distError)
+          + "?numClusters=" + this.numClusters + "&wasserError=" + this.wasserError + "&remOutliers=" + this.checked)
           .then(function (data) {
 
         var margin = {top: 10, right: 30, bottom: 30, left: 60},

@@ -7,7 +7,7 @@ import * as d3 from "d3";
 
 export default {
   name: "MinimumTreePlot",
-  props: ['fileSel', 'viewSel', 'numClusters', 'wasserError', 'distError'],
+  props: ['fileSel', 'viewSel', 'numClusters', 'wasserError', 'checked'],
   data() {
     return {
     }
@@ -20,7 +20,7 @@ export default {
       d3.select("#my_dataviz").selectAll("svg").remove()
       //2_TwoNum.csv
       d3.json("http://localhost:5000/api/v1/views/" + this.viewSel + "/files/" + this.fileSel
-          + "?numClusters=" + this.numClusters + "&wasserError=" + this.wasserError + "&distError=" + this.distError)
+          + "?numClusters=" + this.numClusters + "&wasserError=" + this.wasserError + "&remOutliers=" + this.checked)
           .then(function (data) {
 
         var margin = {top: 10, right: 30, bottom: 30, left: 60},

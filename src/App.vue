@@ -6,8 +6,8 @@
       </view-file-selection>
       <span v-if="isWasser() || isCluster()">
         <clusters :numClusters="numClusters" @clusSelected="clusSelected"></clusters>
-          <sliders :wasserDist="wasserDist" :euclidDist="euclidDist" @wasserErrSelected="wasserErrSelected"
-                   @distErrSelected="distErrSelected"></sliders>
+          <sliders :wasserDist="wasserDist" :checked="checked" @wasserErrSelected="wasserErrSelected"
+                   @checkedSelected="checkedSelected"></sliders>
       </span>
       <button type="button" class="btn btn-primary" @click="plot">Plot</button>
     </div>
@@ -20,14 +20,14 @@
                  :viewSel="viewSel"
                  :numClusters="numClusters"
                  :wasserError="wasserDist"
-                 :distError="euclidDist" @loading="setLoad" @errored="setError" ref="scatter">
+                 :checked="checked" @loading="setLoad" @errored="setError" ref="scatter">
     </simple-plot>
     <tri-plot :fileSel="fileSel" :viewSel="viewSel" @loading="setLoad" @errored="setError" ref="tri"></tri-plot>
     <min-tree-plot :fileSel="fileSel"
                    :viewSel="viewSel"
                    :numClusters="numClusters"
                    :wasserError="wasserDist"
-                   :distError="euclidDist" @loading="setLoad" @errored="setError" ref="tree">
+                   :checked="checked" @loading="setLoad" @errored="setError" ref="tree">
     </min-tree-plot>
   </div>
 </template>
@@ -58,7 +58,7 @@ export default {
       viewSel: "simple-plots",
       numClusters: 6,
       wasserDist: 0.1,
-      euclidDist: 0.1,
+      checked: false,
       loading: false,
       errored: false
       }
@@ -92,8 +92,8 @@ export default {
     wasserErrSelected(wasser){
       this.wasserDist = wasser
     },
-    distErrSelected(dist){
-      this.euclidDist = dist
+    checkedSelected(checked){
+      this.checked = checked
     },
     setLoad(loading){
       this.loading = loading
