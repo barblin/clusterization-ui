@@ -1,45 +1,44 @@
 <template>
   <div id="app">
-    <div class="plot-menu">
-      <view-file-selection :fileSel="fileSel" :viewSel="viewSel"
-                           @fileSelected="fileSelected" @viewSelected="viewSelected">
-      </view-file-selection>
-      <span v-if="isWasser() || isCluster()">
+    <div class="plot-menu row">
+      <div class="col-sm"></div>
+      <div class="col-lg-10">
+        <view-file-selection :fileSel="fileSel" :viewSel="viewSel"
+                             @fileSelected="fileSelected" @viewSelected="viewSelected">
+        </view-file-selection>
+        <span v-if="isWasser() || isCluster()">
         <clusters :numClusters="numClusters" @clusSelected="clusSelected"></clusters>
           <sliders :wasserDist="wasserDist" :checked="checked" @wasserErrSelected="wasserErrSelected"
                    @checkedSelected="checkedSelected"></sliders>
       </span>
-      <button type="button" class="btn btn-primary" @click="plot">Plot</button>
+        <button type="button" class="btn btn-primary" @click="loadData">Plot</button>
+      </div>
+      <div class="col-sm">
+        <span class="alert alert-info menu-status-indicator" v-show="loading">Loading...</span>
+        <span class="alert alert-danger menu-status-indicator" v-show="errored">An error occured</span>
+        <span class="alert alert-success menu-status-indicator" v-show="!loading && !errored">Ready</span>
+      </div>
     </div>
 
-    <div class="alert alert-info" v-show="loading">Loading...</div>
-    <div class="alert alert-danger" v-show="errored">An error occured</div>
-
     <!--<stop-watch></stop-watch>-->
-    <simple-plot :fileSel="fileSel"
-                 :viewSel="viewSel"
-                 :numClusters="numClusters"
-                 :wasserError="wasserDist"
-                 :checked="checked" @loading="setLoad" @errored="setError" ref="scatter">
-    </simple-plot>
-    <tri-plot :fileSel="fileSel" :viewSel="viewSel" @loading="setLoad" @errored="setError" ref="tri"></tri-plot>
-    <min-tree-plot :fileSel="fileSel"
-                   :viewSel="viewSel"
-                   :numClusters="numClusters"
-                   :wasserError="wasserDist"
-                   :checked="checked" @loading="setLoad" @errored="setError" ref="tree">
-    </min-tree-plot>
+    <tri-plot v-if="isDelaunay()" :plotData="plotData"></tri-plot>
+    <simple-plot v-else-if="isScatter()" :plotData="plotData"></simple-plot>
+    <min-tree-plot v-else-if="isTree()" :plotData="plotData"></min-tree-plot>
+    <div id="my_dataviz" class="simple-plot"></div>
   </div>
 </template>
 
 <script>
 //import StopWatch from "@/components/StopWatch";
-import SimplePlot from "@/components/SimplePlot";
-import TriangulationPlot from "@/components/TriangulationPlot";
-import MinimumTreePlot from "@/components/MinimumTreePlot";
+import SimplePlot from "@/components/plots/SimplePlot";
+import TriangulationPlot from "@/components/plots/TriangulationPlot";
+import MinimumTreePlot from "@/components/plots/MinimumTreePlot";
 import Sliders from "@/components/controls/Sliders";
 import Clusters from "@/components/controls/Clusters";
 import ViewAndFileSelection from "@/components/controls/ViewAndFileSelection";
+import * as d3 from "d3";
+
+const axios = require('axios');
 
 export default {
   name: "app",
@@ -53,7 +52,7 @@ export default {
   },
   data() {
     return {
-      repository: "",
+      plotData: "",
       fileSel: "Select File",
       viewSel: "simple-plots",
       numClusters: 6,
@@ -61,7 +60,7 @@ export default {
       checked: false,
       loading: false,
       errored: false
-      }
+    }
   },
   methods: {
     isTree() {
@@ -86,29 +85,39 @@ export default {
     viewSelected(view) {
       this.viewSel = view
     },
-    clusSelected(comp){
+    clusSelected(comp) {
       this.numClusters = comp
     },
-    wasserErrSelected(wasser){
+    wasserErrSelected(wasser) {
       this.wasserDist = wasser
     },
-    checkedSelected(checked){
+    checkedSelected(checked) {
       this.checked = checked
     },
-    setLoad(loading){
+    setLoad(loading) {
       this.loading = loading
     },
-    setError(errored){
+    setError(errored) {
       this.errored = errored
     },
-    plot() {
-      if(this.isScatter()) {
-        this.$refs.scatter.getIssues()
-      } else if(this.isDelaunay()){
-        this.$refs.tri.getIssues()
-      } else if (this.isTree()){
-        this.$refs.tree.getIssues()
-      }
+    loadData() {
+      this.loading = true
+      this.errored = false
+
+      axios.get("http://localhost:5000/api/v1/views/" + this.viewSel + "/files/" + this.fileSel
+          + "?numClusters=" + this.numClusters + "&wasserError=" + this.wasserDist + "&remOutliers=" + this.checked)
+          .then(resp => {
+                d3.select("#my_dataviz").selectAll("svg").remove()
+                this.plotData = resp.data
+              }
+          )
+          .catch(error => {
+            this.errored = true
+            console.error(error);
+          })
+          .finally(() => (
+              this.loading = false
+          ));
     }
   }
 };
@@ -124,6 +133,17 @@ export default {
 }
 
 .plot-menu {
+  margin-top: 1rem;
+
+}
+
+.menu-status-indicator {
+  display: inline-block;
+  position: absolute;
+  margin-right: 1rem;
+}
+
+.simple-plot {
   margin-top: 1rem;
 }
 </style>
