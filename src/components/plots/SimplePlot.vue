@@ -53,7 +53,7 @@ export default {
           .attr("cy", function (d) {
             return y(d[1]);
           })
-          .attr("r", 1.5)
+          .attr("r", 1.0)
           .style("fill", function (d) {
             return col_map[d[2]];
           })

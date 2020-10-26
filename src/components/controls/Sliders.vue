@@ -8,20 +8,30 @@
           <input type="checkbox" class="form-check-input" id="outliers" v-model="checked">
           <label class="form-check-label" for="outliers">Remove outliers</label>
       </span>
+    <span v-if="checked">
+      <br>
+      <span class="slider-margin">
+        STDV * {{ stdvMultiplier }}
+        <input type="range" min="1" max="2" step="0.1" class="slider" v-model="stdvMultiplier" id="stdv-dist">
+      </span>
+    </span>
     </span>
 </template>
 
 <script>
 export default {
   name: "sliders",
-  props: ['wasserDist', 'checked'],
+  props: ['wasserDist', 'checked', 'stdvMultiplier'],
   watch: {
     wasserDist: function (val) {
       this.$emit('wasserErrSelected', val)
     },
     checked: function (val) {
       this.$emit('checkedSelected', val)
-    }
+    },
+    stdvMultiplier: function (val) {
+      this.$emit('stdvMultiplierSelected', val)
+    },
   },
 }
 </script>

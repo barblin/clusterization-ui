@@ -1,15 +1,20 @@
 <template>
   <div id="app">
     <div class="plot-menu row">
-      <div class="col-sm"></div>
+      <div class="col-sm-1"></div>
       <div class="col-lg-10">
         <view-file-selection :fileSel="fileSel" :viewSel="viewSel"
                              @fileSelected="fileSelected" @viewSelected="viewSelected">
         </view-file-selection>
         <span v-if="isWasser() || isCluster()">
         <clusters :numClusters="numClusters" @clusSelected="clusSelected"></clusters>
-          <sliders :wasserDist="wasserDist" :checked="checked" @wasserErrSelected="wasserErrSelected"
-                   @checkedSelected="checkedSelected"></sliders>
+          <sliders :wasserDist="wasserDist"
+                   :checked="checked"
+                   :stdvMultiplier="stdvMultiplier"
+                   @wasserErrSelected="wasserErrSelected"
+                   @stdvMultiplierSelected="stdvMultiplierSelected"
+                   @checkedSelected="checkedSelected">
+          </sliders>
       </span>
         <button type="button" class="btn btn-primary" @click="loadData">Plot</button>
       </div>
@@ -57,6 +62,7 @@ export default {
       viewSel: "simple-plots",
       numClusters: 6,
       wasserDist: 0.1,
+      stdvMultiplier: 2,
       checked: false,
       loading: false,
       errored: false
@@ -94,6 +100,9 @@ export default {
     checkedSelected(checked) {
       this.checked = checked
     },
+    stdvMultiplierSelected(stdvMultiplier){
+      this.stdvMultiplier = stdvMultiplier
+    },
     setLoad(loading) {
       this.loading = loading
     },
@@ -105,7 +114,8 @@ export default {
       this.errored = false
 
       axios.get("http://localhost:5000/api/v1/views/" + this.viewSel + "/files/" + this.fileSel
-          + "?numClusters=" + this.numClusters + "&wasserError=" + this.wasserDist/100 + "&remOutliers=" + this.checked)
+          + "?numClusters=" + this.numClusters + "&wasserError=" + this.wasserDist/100
+          + "&remOutliers=" + this.checked + "&stdvMultiplier=" + this.stdvMultiplier)
           .then(resp => {
                 d3.select("#my_dataviz").selectAll("svg").remove()
                 this.plotData = resp.data
