@@ -1,8 +1,8 @@
 <template>
   <span class="fixed">
       <span class="slider-margin">
-        d(W): {{ Math.round(wasserDist * 100) }} %
-        <input type="range" min="0.01" max="1" step="0.01" class="slider" v-model="wasserDist" id="wasser-dist">
+        d(W): {{ wasserDist }} %
+        <input type="range" min="0" max="5" step="0.01" class="slider" v-model="wasserDist" id="wasser-dist">
       </span>
       <span class="outlier-checkbox">
           <input type="checkbox" class="form-check-input" id="outliers" v-model="checked">

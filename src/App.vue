@@ -105,7 +105,7 @@ export default {
       this.errored = false
 
       axios.get("http://localhost:5000/api/v1/views/" + this.viewSel + "/files/" + this.fileSel
-          + "?numClusters=" + this.numClusters + "&wasserError=" + this.wasserDist + "&remOutliers=" + this.checked)
+          + "?numClusters=" + this.numClusters + "&wasserError=" + this.wasserDist/100 + "&remOutliers=" + this.checked)
           .then(resp => {
                 d3.select("#my_dataviz").selectAll("svg").remove()
                 this.plotData = resp.data
