@@ -138,6 +138,7 @@ export default {
                 d3.select("#my_dataviz").selectAll("svg").remove()
                 d3.select("#scatter").selectAll("svg").remove()
                 d3.select("#min_wasser_cluster").selectAll("svg").remove()
+                d3.select("#overlap").selectAll("svg").remove()
                 this.plotData = resp.data
               }
           )
