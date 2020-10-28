@@ -1,35 +1,48 @@
 <template>
   <div id="app">
     <div class="plot-menu row">
-      <div class="col-sm-1"></div>
-      <div class="col-lg-10">
-        <view-file-selection :fileSel="fileSel" :viewSel="viewSel"
+      <div class="col-md-2">
+        <div class="row">
+            <div class="alert alert-info menu-status-indicator" v-show="loading">Loading...</div>
+            <div class="alert alert-danger menu-status-indicator" v-show="errored">An error occured</div>
+            <div class="alert alert-success menu-status-indicator" v-show="!loading && !errored">Ready</div>
+        </div>
+        <div class="row move-left">
+          <view-file-selection :fileSel="fileSel" :viewSel="viewSel"
                              @fileSelected="fileSelected" @viewSelected="viewSelected">
-        </view-file-selection>
-        <span v-if="isWasser() || isCluster()">
-        <clusters :numClusters="numClusters" @clusSelected="clusSelected"></clusters>
-          <sliders :wasserDist="wasserDist"
-                   :checked="checked"
-                   :stdvMultiplier="stdvMultiplier"
-                   @wasserErrSelected="wasserErrSelected"
-                   @stdvMultiplierSelected="stdvMultiplierSelected"
-                   @checkedSelected="checkedSelected">
-          </sliders>
-      </span>
-        <button type="button" class="btn btn-primary" @click="loadData">Plot</button>
+          </view-file-selection>
+        </div>
+        <div v-if="isWasser() || isCluster() || isTree()" class="row move-left">
+          <clusters :numClusters="numClusters" @clusSelected="clusSelected"></clusters>
+        </div>
+        <div class="row">
+          <span v-if="isWasser() || isCluster()">
+            <sliders :wasserDist="wasserDist"
+                     :checked="checked"
+                     :stdvMultiplier="stdvMultiplier"
+                     @wasserErrSelected="wasserErrSelected"
+                     @stdvMultiplierSelected="stdvMultiplierSelected"
+                     @checkedSelected="checkedSelected">
+            </sliders>
+          </span>
+        </div>
+        <div class="row">
+          <div class="mt-5">
+            <button type="button" class="btn btn-primary" @click="loadData">Plot</button>
+          </div>
+        </div>
       </div>
-      <div class="col-sm">
-        <span class="alert alert-info menu-status-indicator" v-show="loading">Loading...</span>
-        <span class="alert alert-danger menu-status-indicator" v-show="errored">An error occured</span>
-        <span class="alert alert-success menu-status-indicator" v-show="!loading && !errored">Ready</span>
+      <div class="col-lg-6">
+        <tri-plot v-if="isDelaunay()" :plotData="plotData"></tri-plot>
+        <simple-plot v-else-if="isScatter()" :plotData="plotData"></simple-plot>
+        <min-tree-plot v-else-if="isTree()" :plotData="plotData"></min-tree-plot>
+        <multi-view v-else-if="isMultiView()" :plotData="plotData"></multi-view>
+        <div id="my_dataviz" class="simple-plot"></div>
       </div>
     </div>
 
     <!--<stop-watch></stop-watch>-->
-    <tri-plot v-if="isDelaunay()" :plotData="plotData"></tri-plot>
-    <simple-plot v-else-if="isScatter()" :plotData="plotData"></simple-plot>
-    <min-tree-plot v-else-if="isTree()" :plotData="plotData"></min-tree-plot>
-    <div id="my_dataviz" class="simple-plot"></div>
+
   </div>
 </template>
 
@@ -38,7 +51,8 @@
 import SimplePlot from "@/components/plots/SimplePlot";
 import TriangulationPlot from "@/components/plots/TriangulationPlot";
 import MinimumTreePlot from "@/components/plots/MinimumTreePlot";
-import Sliders from "@/components/controls/Sliders";
+import Multiview from "@/components/plots/Multiview";
+import Sliders from "@/components/controls/WasserDistSlider";
 import Clusters from "@/components/controls/Clusters";
 import ViewAndFileSelection from "@/components/controls/ViewAndFileSelection";
 import * as d3 from "d3";
@@ -53,7 +67,8 @@ export default {
     'min-tree-plot': MinimumTreePlot,
     'sliders': Sliders,
     'clusters': Clusters,
-    'view-file-selection': ViewAndFileSelection
+    'view-file-selection': ViewAndFileSelection,
+    'multi-view': Multiview
   },
   data() {
     return {
@@ -83,7 +98,10 @@ export default {
       return this.viewSel == 'delaunay-triangulation'
     },
     isCluster() {
-      return this.viewSel == 'clusters-min-tree-wasser'
+      return this.viewSel == 'clusters-min-tree-wasser' || this.viewSel == 'triple-plots'
+    },
+    isMultiView() {
+      return this.viewSel == 'triple-plots'
     },
     fileSelected(file) {
       this.fileSel = file
@@ -100,7 +118,7 @@ export default {
     checkedSelected(checked) {
       this.checked = checked
     },
-    stdvMultiplierSelected(stdvMultiplier){
+    stdvMultiplierSelected(stdvMultiplier) {
       this.stdvMultiplier = stdvMultiplier
     },
     setLoad(loading) {
@@ -114,10 +132,12 @@ export default {
       this.errored = false
 
       axios.get("http://localhost:5000/api/v1/views/" + this.viewSel + "/files/" + this.fileSel
-          + "?numClusters=" + this.numClusters + "&wasserError=" + this.wasserDist/100
+          + "?numClusters=" + this.numClusters + "&wasserError=" + this.wasserDist / 100
           + "&remOutliers=" + this.checked + "&stdvMultiplier=" + this.stdvMultiplier)
           .then(resp => {
                 d3.select("#my_dataviz").selectAll("svg").remove()
+                d3.select("#scatter").selectAll("svg").remove()
+                d3.select("#min_wasser_cluster").selectAll("svg").remove()
                 this.plotData = resp.data
               }
           )
@@ -138,22 +158,21 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  text-align: left;
   color: #2c3e50;
 }
 
 .plot-menu {
   margin-top: 1rem;
+  padding-left: 2rem;
 
-}
-
-.menu-status-indicator {
-  display: inline-block;
-  position: absolute;
-  margin-right: 1rem;
 }
 
 .simple-plot {
   margin-top: 1rem;
+}
+
+.move-left {
+  margin-left: 0rem;
 }
 </style>

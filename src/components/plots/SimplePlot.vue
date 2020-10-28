@@ -4,6 +4,7 @@
 
 <script>
 import * as d3 from "d3";
+import {col_map} from "../../services/colors";
 
 export default {
   name: "SimplePlot",
@@ -12,14 +13,9 @@ export default {
     plotData: function (plotData) {
       console.log(plotData)
 
-      let col_map = {
-        0: '#a6cee3', 1: '#1f78b4', 2: '#b2df8a',
-        3: '#33a02c', 4: '#fb9a99', 5: '#e31a1c', 6: '#fdbf6f', 7: '#ff7f00', 8: '#cab2d6'
-      }
-
-      const margin = {top: 10, right: 30, bottom: 30, left: 60},
-          width = 1400 - margin.left - margin.right,
-          height = 740 - margin.top - margin.bottom;
+      const margin = {top: 10, right: 30, bottom: 30, left: 30},
+          width = 1500 - margin.left - margin.right,
+          height = 800 - margin.top - margin.bottom;
 
       const svg = d3.select("#my_dataviz")
           .append("svg")

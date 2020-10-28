@@ -12,9 +12,9 @@ export default {
     plotData: function (plotData) {
       console.log(plotData)
 
-      const margin = {top: 10, right: 30, bottom: 30, left: 60},
-          width = 1400 - margin.left - margin.right,
-          height = 740 - margin.top - margin.bottom;
+      const margin = {top: 10, right: 30, bottom: 30, left: 30},
+          width = 1500 - margin.left - margin.right,
+          height = 800 - margin.top - margin.bottom;
 
       const svg = d3.select("#my_dataviz")
           .append("svg")
