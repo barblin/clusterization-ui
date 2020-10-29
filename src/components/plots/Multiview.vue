@@ -137,7 +137,7 @@ export default {
 
       svg.append('g')
           .selectAll("dot")
-          .data(plotData.tree_data)
+          .data(plotData.cluster_compare)
           .enter()
           .append("circle")
           .attr("cx", function (d) {

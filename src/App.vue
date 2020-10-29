@@ -1,21 +1,21 @@
 <template>
   <div id="app">
-    <div class="plot-menu row">
-      <div class="col-md-2">
-        <div class="row">
+    <div class="row">
+      <div class="sidebar-background col-md-2">
+        <div class="row plot-menu">
             <div class="alert alert-info menu-status-indicator" v-show="loading">Loading...</div>
             <div class="alert alert-danger menu-status-indicator" v-show="errored">An error occured</div>
             <div class="alert alert-success menu-status-indicator" v-show="!loading && !errored">Ready</div>
         </div>
-        <div class="row move-left">
+        <div class="row plot-menu">
           <view-file-selection :fileSel="fileSel" :viewSel="viewSel"
                              @fileSelected="fileSelected" @viewSelected="viewSelected">
           </view-file-selection>
         </div>
-        <div v-if="isWasser() || isCluster() || isTree()" class="row move-left">
+        <div v-if="isWasser() || isCluster() || isTree()" class="row plot-menu">
           <clusters :numClusters="numClusters" @clusSelected="clusSelected"></clusters>
         </div>
-        <div class="row">
+        <div class="row plot-menu">
           <span v-if="isWasser() || isCluster()">
             <sliders :wasserDist="wasserDist"
                      :checked="checked"
@@ -26,9 +26,25 @@
             </sliders>
           </span>
         </div>
-        <div class="row">
+        <div class="row plot-menu">
           <div class="mt-5">
             <button type="button" class="btn btn-primary" @click="loadData">Plot</button>
+          </div>
+        </div>
+        <br>
+        <div v-if="isMultiView() && plotData.clustered_points" class="row plot-menu">
+          <div class="badge badge-success">
+            Clustered vertices: {{plotData.clustered_points}}
+          </div>
+        </div>
+        <div v-if="isMultiView() && plotData.clustered_points_match" class="row plot-menu">
+          <div class="badge badge-success">
+            Matched vetices: {{plotData.clustered_points_match}}
+          </div>
+        </div>
+        <div v-if="isMultiView() && plotData.clustered_points_match" class="row plot-menu">
+          <div class="badge badge-success">
+            Match in % : {{ Math.round(plotData.clustered_points_match / plotData.clustered_points * 100) }}
           </div>
         </div>
       </div>
@@ -72,7 +88,7 @@ export default {
   },
   data() {
     return {
-      plotData: "",
+      plotData: {},
       fileSel: "Select File",
       viewSel: "simple-plots",
       numClusters: 6,
@@ -98,10 +114,10 @@ export default {
       return this.viewSel == 'delaunay-triangulation'
     },
     isCluster() {
-      return this.viewSel == 'clusters-min-tree-wasser' || this.viewSel == 'triple-plots'
+      return this.viewSel == 'clusters-min-tree-wasser' || this.viewSel == 'multi-plots'
     },
     isMultiView() {
-      return this.viewSel == 'triple-plots'
+      return this.viewSel == 'multi-plots'
     },
     fileSelected(file) {
       this.fileSel = file
@@ -173,7 +189,7 @@ export default {
   margin-top: 1rem;
 }
 
-.move-left {
-  margin-left: 0rem;
+.sidebar-background {
+  height: 100%;
 }
 </style>

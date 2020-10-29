@@ -9,7 +9,7 @@
     <span v-if="checked">
       <br>
           <label for="stdv-dist"> stdv *  {{ stdvMultiplier }}</label>
-          <input type="range" min="1" max="2" step="0.1" class="form-control-range slider" v-model="stdvMultiplier"
+          <input type="range" min="0" max="2" step="0.1" class="form-control-range slider" v-model="stdvMultiplier"
                  id="stdv-dist">
       </span>
   </div>
