@@ -3,11 +3,11 @@
     <div class="row">
       <div class="sidebar-background col-md-2">
         <div class="row plot-menu">
-            <div class="alert alert-info menu-status-indicator" v-show="loading">Loading...</div>
-            <div class="alert alert-danger menu-status-indicator" v-show="errored">An error occured</div>
-            <div class="alert alert-success menu-status-indicator" v-show="!loading && !errored">Ready</div>
+            <div class="alert alert-info menu-status-indicator full-width" v-show="loading">Loading...</div>
+            <div class="alert alert-danger menu-status-indicator full-width" v-show="errored">An error occured</div>
+            <div class="alert alert-success menu-status-indicator full-width" v-show="!loading && !errored">Ready</div>
         </div>
-        <div class="row plot-menu">
+        <div class="row plot-menu ">
           <view-file-selection :fileSel="fileSel" :viewSel="viewSel"
                              @fileSelected="fileSelected" @viewSelected="viewSelected">
           </view-file-selection>
@@ -28,7 +28,8 @@
         </div>
         <div class="row plot-menu">
           <div class="mt-5">
-            <button type="button" class="btn btn-primary" @click="loadData">Plot</button>
+            <button type="button" class="btn btn-primary" :disabled="fileSel == 'Select File'"
+                    @click="loadData">Plot</button>
           </div>
         </div>
         <br>
@@ -187,6 +188,12 @@ export default {
 
 .simple-plot {
   margin-top: 1rem;
+}
+
+.full-width {
+  width: 100%;
+  margin-right: 4rem;
+  text-align: center;
 }
 
 .sidebar-background {
