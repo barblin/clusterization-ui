@@ -40,6 +40,6 @@ export default {
 }
 
 .slider {
-  width: 180px;
+  width: 260px;
 }
 </style>
