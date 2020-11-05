@@ -40,7 +40,7 @@
       <div v-if="isMultiView() && $store.getters.plotData.clustered_points_match" class="row plot-menu">
         <div class="badge badge-success">
           Match in % : {{
-            Math.round($store.getters.clustered_points_match /
+            Math.round($store.getters.plotData.clustered_points_match /
                 $store.getters.plotData.clustered_points * 100)
           }}
         </div>
@@ -94,6 +94,11 @@ export default {
       return this.$store.getters.isClusterWasser || this.$store.getters.isMulti
     },
     isMultiView() {
+      if(this.$store.getters.isMulti){
+        this.$store.commit('width', 580)
+        this.$store.commit('height', 430)
+      }
+
       return this.$store.getters.isMulti
     },
     loadData() {
