@@ -49,6 +49,7 @@ export default {
       return this.mode.valueOf() === MODES.EXPERT.valueOf()
     },
     switchToCustomer(){
+      this.$store.commit('updatePlot', {})
       this.$store.commit('updateViewSel', PROGRESS.START)
       this.mode= this.modes.CUSTOMER
     },
@@ -56,8 +57,8 @@ export default {
       this.$store.commit('updatePlot', {})
       this.$store.commit('updateViewSel', PROGRESS.SIMPLE_PLOT)
       this.$store.commit('updateFileSel', "Select File")
-      this.$store.commit('height', 1500)
-      this.$store.commit('width', 800)
+      this.$store.commit('height', 800)
+      this.$store.commit('width', 1500)
       this.mode= this.modes.EXPERT
     }
   }

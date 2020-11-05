@@ -11,8 +11,6 @@ export default {
   props: ['plotData'],
   watch: {
     plotData: function (plotData) {
-      console.log(plotData)
-
       const margin = {top: 10, right: 30, bottom: 30, left: 30},
           width = this.$store.getters.width - margin.left - margin.right,
           height = this.$store.getters.height - margin.top - margin.bottom;

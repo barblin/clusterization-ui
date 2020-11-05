@@ -21,9 +21,6 @@
 
 export default {
   name: "Progress",
-  data() {
-
-  },
   methods: {
   }
 }
