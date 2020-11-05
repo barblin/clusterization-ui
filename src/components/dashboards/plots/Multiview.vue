@@ -12,7 +12,7 @@
 
 <script>
 import * as d3 from "d3";
-import {col_map} from "../../services/colors";
+import {col_map} from "../../../services/colors";
 
 export default {
   name: "SimplePlot",
@@ -27,8 +27,8 @@ export default {
   methods : {
     leftPlot: function (plotData) {
       const margin = {top: 20, right: 10, bottom: 30, left: 25},
-          width = 650 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
+          width = this.$store.getters.width - margin.left - margin.right,
+          height = this.$store.getters.height - margin.top - margin.bottom;
 
       const svg = d3.select("#scatter")
           .append("svg")
@@ -69,8 +69,8 @@ export default {
     },
     rightPlot: function (plotData) {
       const margin = {top: 20, right: 10, bottom: 30, left: 25},
-          width = 650 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
+          width = this.$store.getters.width - margin.left - margin.right,
+          height = this.$store.getters.height - margin.top - margin.bottom;
 
       const svg = d3.select("#min_wasser_cluster")
           .append("svg")
@@ -111,8 +111,8 @@ export default {
     },
     overlap: function (plotData) {
       const margin = {top: 20, right: 10, bottom: 30, left: 25},
-          width = 650 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
+          width = this.$store.getters.width - margin.left - margin.right,
+          height = this.$store.getters.height - margin.top - margin.bottom;
 
       const svg = d3.select("#overlap")
           .append("svg")

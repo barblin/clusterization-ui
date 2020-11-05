@@ -4,17 +4,18 @@
 
 <script>
 import * as d3 from "d3";
+import {col_map} from "../../../services/colors";
 
 export default {
-  name: "TriangulationPlot",
+  name: "SimplePlot",
   props: ['plotData'],
   watch: {
     plotData: function (plotData) {
       console.log(plotData)
 
       const margin = {top: 10, right: 30, bottom: 30, left: 30},
-          width = 1500 - margin.left - margin.right,
-          height = 800 - margin.top - margin.bottom;
+          width = this.$store.getters.width - margin.left - margin.right,
+          height = this.$store.getters.height - margin.top - margin.bottom;
 
       const svg = d3.select("#my_dataviz")
           .append("svg")
@@ -37,18 +38,21 @@ export default {
       svg.append("g")
           .call(d3.axisLeft(y));
 
-      plotData.data.forEach(d => {
-        let trianglePoints = x(d[0][0]) + ',' + y(d[0][1]) + ' ' +
-            x(d[1][0]) + ',' + y(d[1][1]) + ' ' +
-            x(d[2][0]) + ',' + y(d[2][1]);
-
-        svg.append("polygon")
-            .attr("points", trianglePoints)
-            .style('fill', 'none')
-            .style('stroke', 'violet')
-            .style("stroke-width", 0.5);
-
-      })
+      svg.append('g')
+          .selectAll("dot")
+          .data(plotData.data)
+          .enter()
+          .append("circle")
+          .attr("cx", function (d) {
+            return x(d[0]);
+          })
+          .attr("cy", function (d) {
+            return y(d[1]);
+          })
+          .attr("r", 1.0)
+          .style("fill", function (d) {
+            return col_map[d[2]];
+          })
     }
 
   }
@@ -57,9 +61,5 @@ export default {
 </script>
 
 <style scoped>
-
-.simple-plot {
-  margin-top: 2rem;
-}
 
 </style>

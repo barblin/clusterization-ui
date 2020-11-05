@@ -1,10 +1,10 @@
 <template>
   <div>
-      <b-dropdown :text="viewSel" class="mt-1">
+      <b-dropdown :text="$store.getters.viewSel" class="mt-1">
         <b-dropdown-item v-for="view in views" :value="view" :key="view" @click="onViewSel(view)">{{ view }}
         </b-dropdown-item>
       </b-dropdown><br>
-      <b-dropdown :text="fileSel" class="mt-1">
+      <b-dropdown :text="$store.getters.fileSel" class="mt-1">
         <b-dropdown-item v-for="file in files" :key="file" @click="onFileSel(file)">{{ file }}
         </b-dropdown-item>
       </b-dropdown>
@@ -13,10 +13,10 @@
 
 <script>
 import axios from "axios";
+import {host} from "../../services/datasource";
 
 export default {
   name: "ViewAndFileSelection",
-  props: ['viewSel', 'fileSel'],
   data() {
     return {
       files: [],
@@ -25,18 +25,18 @@ export default {
   },
   mounted: function () {
     axios
-        .get('http://localhost:5000/api/v1/files')
+        .get(host + '/files')
         .then(response => (this.files = response.data))
     axios
-        .get('http://localhost:5000/api/v1/views')
+        .get(host + '/views')
         .then(response => (this.views = response.data))
   },
   methods: {
     onFileSel(file) {
-      this.$emit('fileSelected', file)
+      this.$store.commit('updateFileSel', file)
     },
     onViewSel(view) {
-      this.$emit('viewSelected', view)
+      this.$store.commit('updateViewSel', view)
     }
   }
 }

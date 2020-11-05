@@ -18,16 +18,22 @@
 <script>
 export default {
   name: "sliders",
-  props: ['wasserDist', 'checked', 'stdvMultiplier'],
+  data (){
+    return {
+      wasserDist: this.$store.getters.wasserDist,
+      checked: this.$store.getters.checked,
+      stdvMultiplier: this.$store.getters.stdvMultiplier
+    }
+  },
   watch: {
     wasserDist: function (val) {
-      this.$emit('wasserErrSelected', val)
+      this.$store.commit("updateWasserDist", val)
     },
     checked: function (val) {
-      this.$emit('checkedSelected', val)
+      this.$store.commit("updateChecked", val)
     },
     stdvMultiplier: function (val) {
-      this.$emit('stdvMultiplierSelected', val)
+      this.$store.commit("updateStdvMultiplier", val)
     },
   },
 }
