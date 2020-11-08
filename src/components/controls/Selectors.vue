@@ -1,7 +1,7 @@
 <template>
   <div>
       <b-dropdown :text="$store.getters.viewSel" class="mt-1">
-        <b-dropdown-item v-for="view in views" :value="view" :key="view" @click="onViewSel(view)">{{ view }}
+        <b-dropdown-item v-for="view in views" :value="view[1]" :key="view[1]" @click="onViewSel(view[0])">{{ view[1] }}
         </b-dropdown-item>
       </b-dropdown><br>
       <b-dropdown :text="$store.getters.fileSel" class="mt-1">

@@ -57,9 +57,4 @@ export default {
 </script>
 
 <style scoped>
-
-.simple-plot {
-  margin-top: 2rem;
-}
-
 </style>

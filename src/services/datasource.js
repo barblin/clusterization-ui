@@ -10,7 +10,8 @@ export function updatePlot() {
 
     axios.get( host + "views/" + store.getters.viewSel + "/files/" + store.getters.fileSel
         + "?numClusters=" + store.getters.clusters + "&wasserError=" + store.getters.wasserDist / 100
-        + "&remOutliers=" + store.getters.checked + "&stdvMultiplier=" + store.getters.stdvMultiplier)
+        + "&remOutliers=" + store.getters.checked + "&stdvMultiplier=" + store.getters.stdvMultiplier
+        + "&normalizeNeighDist=" + store.getters.normalizeNeighDist)
         .then(resp => {
                 d3.select("#my_dataviz").selectAll("svg").remove()
                 d3.select("#scatter").selectAll("svg").remove()

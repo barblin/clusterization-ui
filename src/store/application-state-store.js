@@ -14,6 +14,7 @@ export const store = new Vuex.Store({
         wasserDist: 1,
         stdvMultiplier: 2,
         checked: false,
+        normalizeNeighDist: false,
         plotData: {},
         width: 1500,
         height: 800
@@ -46,6 +47,9 @@ export const store = new Vuex.Store({
         updateChecked(state, checked){
             state.checked = checked
         },
+        updateNormalizeNeighDist(state, normalizeNeighDist){
+            state.normalizeNeighDist = normalizeNeighDist
+        },
         height(state, height){
             state.height = height
         },
@@ -63,6 +67,7 @@ export const store = new Vuex.Store({
         wasserDist: state => state.wasserDist,
         stdvMultiplier: state => state.stdvMultiplier,
         checked: state => state.checked,
+        normalizeNeighDist: state => state.normalizeNeighDist,
         width: state => state.width,
         height: state => state.height,
 

@@ -20,7 +20,7 @@
       </div>
       <div class="row plot-menu"><span v-if="isWasser() || isCluster()"><sliders></sliders></span></div>
       <div class="row plot-menu">
-        <div class="mt-5">
+        <div class="mt-4">
           <button type="button" class="btn btn-primary" :disabled="$store.getters.fileSel == 'Select File'"
                   @click="loadData">Plot
           </button>
@@ -61,9 +61,9 @@ import SimplePlot from "@/components/dashboards/plots/SimplePlot";
 import TriangulationPlot from "@/components/dashboards/plots/TriangulationPlot";
 import MinimumTreePlot from "@/components/dashboards/plots/MinimumTreePlot";
 import Multiview from "@/components/dashboards/plots/Multiview";
-import Sliders from "@/components/controls/WasserDistSlider";
+import Sliders from "@/components/controls/Modifier";
 import Clusters from "@/components/controls/Clusters";
-import ViewAndFileSelection from "@/components/controls/ViewAndFileSelection";
+import ViewAndFileSelection from "@/components/controls/Selectors";
 import {updatePlot} from "../../services/datasource";
 
 export default {
