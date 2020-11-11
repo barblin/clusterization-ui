@@ -1,4 +1,5 @@
 # clusterization-ui
+![editor screen](./ressources/imgs/journey_screen.PNG)
 
 ## Project description
 This UI is being developed to serve different views on point data retrieved from a backend service 
