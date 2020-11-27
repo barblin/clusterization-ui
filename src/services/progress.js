@@ -5,5 +5,6 @@ export let PROGRESS = {
     MIN_TREE: 'minimum-spanning-tree',
     MIN_TREE_WASSER: 'minimum-spanning-tree-wasser',
     CLUSTER_WASSER: 'clusters-min-tree-wasser',
-    MULTI: 'multi-plots'
+    MULTI: 'multi-plots',
+    VARIANCES: 'variances-plots'
 }

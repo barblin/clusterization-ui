@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-lg-9" id="scatter"></div>
+      <div class="col-lg-6" id="scatter"></div>
       <div class="col-lg-3" id="min_wasser_cluster"></div>
     </div>
     <div class="row">

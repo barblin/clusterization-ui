@@ -15,9 +15,16 @@ export const store = new Vuex.Store({
         stdvMultiplier: 2,
         checked: false,
         normalizeNeighDist: false,
+
+        varsFrom: 0.00,
+        varsUntil: 2,
+        varsStepSize: 0.01,
+
         plotData: {},
         width: 1500,
-        height: 800
+        height: 800,
+
+        varianceDetail: null,
     },
     mutations: {
         updateLoading(state, isLoading) {
@@ -26,35 +33,47 @@ export const store = new Vuex.Store({
         updateErrored(state, hadError) {
             state.errored = hadError
         },
-        updatePlot(state, data){
+        updatePlot(state, data) {
             state.plotData = data
         },
-        updateViewSel(state, viewSel){
+        updateViewSel(state, viewSel) {
             state.viewSel = viewSel
         },
-        updateFileSel(state, fileSel){
+        updateFileSel(state, fileSel) {
             state.fileSel = fileSel
         },
-        updateClusters(state, clusters){
+        updateClusters(state, clusters) {
             state.numClusters = clusters
         },
-        updateWasserDist(state, wasserDist){
+        updateWasserDist(state, wasserDist) {
             state.wasserDist = wasserDist
         },
-        updateStdvMultiplier(state, stdvMultiplier){
+        updateStdvMultiplier(state, stdvMultiplier) {
             state.stdvMultiplier = stdvMultiplier
         },
-        updateChecked(state, checked){
+        updateChecked(state, checked) {
             state.checked = checked
         },
-        updateNormalizeNeighDist(state, normalizeNeighDist){
+        updateNormalizeNeighDist(state, normalizeNeighDist) {
             state.normalizeNeighDist = normalizeNeighDist
         },
-        height(state, height){
+        updateVarsFrom(state, from) {
+            state.varsFrom = from
+        },
+        updateVarsUntil(state, until) {
+            state.varsUntil = until
+        },
+        updateStepSize(state, step) {
+            state.varsStepSize = step
+        },
+        height(state, height) {
             state.height = height
         },
-        width(state, width){
+        width(state, width) {
             state.width = width
+        },
+        varianceDetail(state, detail) {
+            state.varianceDetail = detail
         }
     },
     getters: {
@@ -68,8 +87,15 @@ export const store = new Vuex.Store({
         stdvMultiplier: state => state.stdvMultiplier,
         checked: state => state.checked,
         normalizeNeighDist: state => state.normalizeNeighDist,
+
+        varsFrom: state => state.varsFrom,
+        varsUntil: state => state.varsUntil,
+        varsStepSize: state => state.varsStepSize,
+
         width: state => state.width,
         height: state => state.height,
+
+        varianceDetail: state => state.varianceDetail,
 
         isStart: state => state.viewSel.valueOf() === PROGRESS.START.valueOf(),
         isSimple: state => state.viewSel.valueOf() === PROGRESS.SIMPLE_PLOT.valueOf(),
@@ -78,6 +104,7 @@ export const store = new Vuex.Store({
         isMinTreeWasser: state => state.viewSel.valueOf() === PROGRESS.MIN_TREE_WASSER.valueOf(),
         isClusterWasser: state => state.viewSel.valueOf() === PROGRESS.CLUSTER_WASSER.valueOf(),
         isMulti: state => state.viewSel.valueOf() === PROGRESS.MULTI.valueOf(),
+        isVars: state => state.viewSel.valueOf() === PROGRESS.VARIANCES.valueOf(),
 
         isPSimple: state => state.viewSel.valueOf() === PROGRESS.SIMPLE_PLOT.valueOf() ||
             state.viewSel.valueOf() === PROGRESS.DELAUNAY.valueOf() ||

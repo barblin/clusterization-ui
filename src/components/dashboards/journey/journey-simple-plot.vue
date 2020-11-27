@@ -42,6 +42,8 @@ export default {
     }
   },
   mounted() {
+    this.$store.commit('width', 500)
+    this.$store.commit('height', 400)
     this.$store.commit('updateFileSel', 'waveData_5.csv')
 
     updatePlot()
@@ -55,7 +57,7 @@ export default {
 </script>
 
 <style scoped>
-. plot {
+.plot {
   margin-left: 100px
 }
 </style>

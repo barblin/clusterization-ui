@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-5">
     <div v-if="$store.getters.isStart">
       <div class="container">
         <div class="block">
@@ -58,8 +58,6 @@ export default {
     }
   },
   mounted() {
-    this.$store.commit('width', 500)
-    this.$store.commit('height', 400)
     this.$store.commit('updateViewSel', PROGRESS.START)
   },
   components: {
@@ -72,6 +70,8 @@ export default {
   },
   methods: {
     simplePlot(){
+      this.$store.commit('width', 500)
+      this.$store.commit('height', 400)
       this.$store.commit('updateViewSel', PROGRESS.SIMPLE_PLOT)
     }
   }

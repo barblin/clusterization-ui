@@ -4,9 +4,10 @@
 
 <script>
 import * as d3 from "d3";
+import {col_map} from "../../../services/colors";
 
 export default {
-  name: "MinimumTreePlot",
+  name: "ClusterPlot",
   props: ['plotData'],
   watch: {
     plotData: function (plotData) {
@@ -16,6 +17,7 @@ export default {
 
       const svg = d3.select("#my_dataviz")
           .append("svg")
+          .attr("id", "var-det")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
           .append("g")
@@ -35,18 +37,27 @@ export default {
       svg.append("g")
           .call(d3.axisLeft(y));
 
-      plotData.data.forEach(d => {
-        let trianglePoints = x(d[0].coords[0]) + ',' + y(d[0].coords[1]) + ' ' +
-            x(d[1].coords[0]) + ',' + y(d[1].coords[1]);
+      let clusters = plotData.data
 
-        svg.append("polygon")
-            .attr("points", trianglePoints)
-            .style('fill', 'none')
-            .style('stroke', 'violet')
-            .style("stroke-width", 0.5);
-
+      clusters.forEach(clus => {
+        svg.append('g')
+            .selectAll("dot")
+            .data(clus[3])
+            .enter()
+            .append("circle")
+            .attr("cx", function (d) {
+              return x(d[0]);
+            })
+            .attr("cy", function (d) {
+              return y(d[1]);
+            })
+            .attr("r", 1.0)
+            .style("fill", function () {
+              return col_map[clus[1]];
+            })
       })
     }
+
   }
 }
 

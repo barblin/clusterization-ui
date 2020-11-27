@@ -57,8 +57,6 @@ export default {
       this.$store.commit('updatePlot', {})
       this.$store.commit('updateViewSel', PROGRESS.SIMPLE_PLOT)
       this.$store.commit('updateFileSel', "Select File")
-      this.$store.commit('height', 800)
-      this.$store.commit('width', 1500)
       this.mode= this.modes.EXPERT
     }
   }
@@ -76,6 +74,6 @@ export default {
 
 .mode-button {
   width: 100%;
-  height:70px;
+  height:40px;
 }
 </style>

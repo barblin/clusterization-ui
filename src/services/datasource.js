@@ -8,15 +8,18 @@ export function updatePlot() {
     store.commit('updateLoading', true)
     store.commit('updateErrored', false)
 
-    axios.get( host + "views/" + store.getters.viewSel + "/files/" + store.getters.fileSel
-        + "?numClusters=" + store.getters.clusters + "&wasserError=" + store.getters.wasserDist / 100
-        + "&remOutliers=" + store.getters.checked + "&stdvMultiplier=" + store.getters.stdvMultiplier
-        + "&normalizeNeighDist=" + store.getters.normalizeNeighDist)
+    axios.get( host + "views/" + store.getters.viewSel
+        + "/files/" + store.getters.fileSel
+        + "?numClusters=" + store.getters.clusters
+        + "&wasserError=" + store.getters.wasserDist / 100
+        + "&remOutliers=" + store.getters.checked
+        + "&stdvMultiplier=" + store.getters.stdvMultiplier
+        + "&normalizeNeighDist=" + store.getters.normalizeNeighDist
+        + "&varsFrom=" + store.getters.varsFrom / 100
+        + "&varsUntil=" + store.getters.varsUntil / 100
+        + "&varsStepSize=" + store.getters.varsStepSize / 100)
         .then(resp => {
-                d3.select("#my_dataviz").selectAll("svg").remove()
-                d3.select("#scatter").selectAll("svg").remove()
-                d3.select("#min_wasser_cluster").selectAll("svg").remove()
-                d3.select("#overlap").selectAll("svg").remove()
+                d3.selectAll("svg").remove()
                 store.commit('updatePlot', resp.data)
             }
         )
