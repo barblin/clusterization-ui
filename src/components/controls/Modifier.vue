@@ -17,10 +17,6 @@
                  id="stdv-dist">
       </span>
     </div>
-    <div class="alert alert-dark">
-      <label class="form-check-label mt-1">Normalize neighbour dists </label>
-      <input type="checkbox" class="form-check-input mt-2" id="normalize" v-model="normalizeNeighDist">
-    </div>
   </div>
 </template>
 
@@ -31,8 +27,7 @@ export default {
     return {
       wasserDist: this.$store.getters.wasserDist,
       checked: this.$store.getters.checked,
-      stdvMultiplier: this.$store.getters.stdvMultiplier,
-      normalizeNeighDist: this.$store.getters.normalizeNeighDist,
+      stdvMultiplier: this.$store.getters.stdvMultiplier
     }
   },
   watch: {
@@ -44,9 +39,6 @@ export default {
     },
     stdvMultiplier: function (val) {
       this.$store.commit("updateStdvMultiplier", val)
-    },
-    normalizeNeighDist: function (val) {
-      this.$store.commit("updateNormalizeNeighDist", val)
     }
   },
 }

@@ -84,8 +84,8 @@ export const PlotState = {
 
     isVariancesView() {
         if (store.getters.isVars) {
-            store.commit('width', 1100)
-            store.commit('height', 700)
+            store.commit('width', 1000)
+            store.commit('height', 600)
             store.commit('updateStdvMultiplier', 2)
             store.commit('updateChecked', true)
         }

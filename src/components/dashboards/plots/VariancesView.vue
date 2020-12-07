@@ -3,7 +3,7 @@
     <div id="accordion" class="plot-menu">
       <div id="my_variance_viz" class="simple-plot"></div>
       <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-8">
           <div id="my_variance_detail" class="simple-plot"></div>
           <div v-if="$store.getters.varianceDetail != null">
             <br>
@@ -11,25 +11,23 @@
             <span>Total vertices clustered: {{ $store.getters.varianceDetail.sum_sz }}</span>
           </div>
         </div>
-        <div class="col-md-3">
-          <br>
-          <div v-if="$store.getters.varianceDetail != null">
+        <div class="col-md-3 mt-3">
+          <div class="alert alert-dark bg-dark" v-if="$store.getters.varianceDetail != null">
             {{ plot($store.getters.varianceDetail) }}
             <p v-for="clus in $store.getters.varianceDetail.data" :key="clus.id">
               <span v-if="clus[0] == -1">
                 <span v-bind:style="{ color: col_map[clus[1]] }">
                   Noise Cluster / Size: {{ clus[2] }}
-                  <br> Sum W-Cost: {{ clus[4] }} <br> W-Variance: {{ clus[5] }}
+                  <br> W-Sum: {{ clus[4].toFixed(9) }} / W-Var: {{ clus[5].toFixed(9) }}
                 </span>
               </span>
               <span v-else>
                 <span v-bind:style="{ color: col_map[clus[1]] }">
-                  Cluster: {{ clus[0] }} / Size: {{ clus[2] }}
-                  <br> Sum W-Cost: {{ clus[4] }} <br> W-Variance: {{ clus[5] }}
+                  Cluster: {{ clusn[0] }} / Size: {{ clus[2] }}
+                  <br> W-Sum: {{ clus[4].toFixed(9) }} / W-Var: {{ clus[5].toFixed(9) }}
                 </span>
               </span>
             </p>
-            <br>
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ export default {
     plotData: function (plotData) {
       const margin = {top: 20, right: 10, bottom: 30, left: 25},
           width = 1500 - margin.left - margin.right,
-          height = 150 - margin.top - margin.bottom;
+          height = 200 - margin.top - margin.bottom;
 
       const svg = d3.select("#my_variance_viz")
           .append("svg")
@@ -79,7 +79,7 @@ export default {
           .style("fill", function (d) {
             console.log(d.significant)
             if (d.significant) {
-              return col_map[4];
+              return col_map[2];
             }
 
             return col_map[0];
@@ -105,7 +105,7 @@ export default {
                 })
                 .style("fill", function (d) {
                   if (d.significant) {
-                    return col_map[4];
+                    return col_map[2];
                   }
 
                   return col_map[0];

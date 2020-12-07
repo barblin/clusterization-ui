@@ -14,7 +14,6 @@ export const store = new Vuex.Store({
         wasserDist: 1,
         stdvMultiplier: 2,
         checked: false,
-        normalizeNeighDist: false,
 
         varsFrom: 0.00,
         varsUntil: 2,
@@ -54,9 +53,6 @@ export const store = new Vuex.Store({
         updateChecked(state, checked) {
             state.checked = checked
         },
-        updateNormalizeNeighDist(state, normalizeNeighDist) {
-            state.normalizeNeighDist = normalizeNeighDist
-        },
         updateVarsFrom(state, from) {
             state.varsFrom = from
         },
@@ -86,7 +82,6 @@ export const store = new Vuex.Store({
         wasserDist: state => state.wasserDist,
         stdvMultiplier: state => state.stdvMultiplier,
         checked: state => state.checked,
-        normalizeNeighDist: state => state.normalizeNeighDist,
 
         varsFrom: state => state.varsFrom,
         varsUntil: state => state.varsUntil,

@@ -14,7 +14,6 @@ export function updatePlot() {
         + "&wasserError=" + store.getters.wasserDist / 100
         + "&remOutliers=" + store.getters.checked
         + "&stdvMultiplier=" + store.getters.stdvMultiplier
-        + "&normalizeNeighDist=" + store.getters.normalizeNeighDist
         + "&varsFrom=" + store.getters.varsFrom / 100
         + "&varsUntil=" + store.getters.varsUntil / 100
         + "&varsStepSize=" + store.getters.varsStepSize / 100)
