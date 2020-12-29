@@ -7,16 +7,16 @@ import * as d3 from "d3";
 import {col_map} from "@/services/colors";
 
 export default {
-  name: "WassersteinVariancePlot",
+  name: "RuntimePlot",
   props: ['mode', 'plotData'],
   watch: {
-    plotData: function (plotData){
-      if(this.mode){
+    plotData: function (plotData) {
+      if (this.mode) {
         this.plot(plotData)
       }
     },
-    mode: function(mode){
-      if(mode) {
+    mode: function (mode) {
+      if (mode) {
         this.plot(this.$store.getters.plotData)
       }
     }
@@ -25,7 +25,7 @@ export default {
     plot: function (plotData) {
       d3.selectAll("svg").remove()
 
-      const margin = {top: 5, right: 10, bottom: 30, left: 35},
+      const margin = {top: 5, right: 10, bottom: 30, left: 45},
           width = 1500 - margin.left - margin.right,
           height = 200 - margin.top - margin.bottom;
 
@@ -55,10 +55,10 @@ export default {
       // Add Y axis
       var y = d3.scaleLinear()
           .domain([d3.min(plotData, function (d) {
-            return +d.cluster_variance;
+            return +d.runtime;
           }),
             d3.max(plotData, function (d) {
-              return +d.cluster_variance;
+              return +d.runtime;
             })])
           .range([height, 0]);
       svg.append("g")
@@ -71,20 +71,20 @@ export default {
           .attr("dy", "1em")
           .style("text-anchor", "middle")
           .style("font-size", 10)
-          .text("var between clusters");
+          .text("sec");
 
       // Add the line
       svg.append("path")
           .datum(plotData)
           .attr("fill", "none")
-          .attr("stroke", "steelblue")
+          .attr("stroke", "black")
           .attr("stroke-width", 1.5)
           .attr("d", d3.line()
               .x(function (d) {
                 return x(d.wasser_margin * 100)
               })
               .y(function (d) {
-                return y(d.cluster_variance)
+                return y(d.runtime)
               })
           )
 
@@ -98,7 +98,7 @@ export default {
             return x(d.wasser_margin * 100);
           })
           .attr("cy", function (d) {
-            return y(d.cluster_variance);
+            return y(d.runtime);
           })
           .attr("r", function (d) {
             if (d.significant) {
@@ -112,7 +112,7 @@ export default {
               return col_map[2];
             }
 
-            return col_map[0];
+            return col_map[3];
           })
           .attr("id", function (d) {
             return d.identity;
@@ -138,13 +138,12 @@ export default {
                     return col_map[2];
                   }
 
-                  return col_map[0];
+                  return col_map[3];
                 })
           })
           .on("click", function (d) {
             store.commit("varianceDetail", d.target.__data__)
           })
-
     }
   }
 }

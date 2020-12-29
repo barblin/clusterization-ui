@@ -86,7 +86,7 @@ export const PlotState = {
         if (store.getters.isVars) {
             store.commit('width', 1000)
             store.commit('height', 600)
-            store.commit('updateStdvMultiplier', 2)
+            store.commit('updateStdvMultiplier', 1.9)
             store.commit('updateChecked', true)
         }
 

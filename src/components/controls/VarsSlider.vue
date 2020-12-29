@@ -8,7 +8,7 @@
         From %
       </div>
       <div class="form-group">
-        <input type="number" :min="0" max="5" step="0.01" lang="en-150"
+        <input type="number" :min="0" max="20" step="0.01" lang="en-150"
                placeholder="Margin until" v-model="varsUntil">
         Until %
       </div>

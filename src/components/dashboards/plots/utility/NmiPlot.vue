@@ -7,16 +7,16 @@ import * as d3 from "d3";
 import {col_map} from "@/services/colors";
 
 export default {
-  name: "WassersteinVariancePlot",
+  name: "NmiPlot",
   props: ['mode', 'plotData'],
   watch: {
-    plotData: function (plotData){
-      if(this.mode){
+    plotData: function (plotData) {
+      if (this.mode) {
         this.plot(plotData)
       }
     },
-    mode: function(mode){
-      if(mode) {
+    mode: function (mode) {
+      if (mode) {
         this.plot(this.$store.getters.plotData)
       }
     }
@@ -25,7 +25,7 @@ export default {
     plot: function (plotData) {
       d3.selectAll("svg").remove()
 
-      const margin = {top: 5, right: 10, bottom: 30, left: 35},
+      const margin = {top: 5, right: 10, bottom: 30, left: 25},
           width = 1500 - margin.left - margin.right,
           height = 200 - margin.top - margin.bottom;
 
@@ -46,7 +46,7 @@ export default {
 
       svg.append("text")
           .attr("transform",
-              "translate(" + (width/2) + " ," +
+              "translate(" + (width / 2) + " ," +
               (height + margin.top + 20) + ")")
           .style("text-anchor", "middle")
           .style("font-size", 10)
@@ -54,39 +54,89 @@ export default {
 
       // Add Y axis
       var y = d3.scaleLinear()
-          .domain([d3.min(plotData, function (d) {
-            return +d.cluster_variance;
-          }),
-            d3.max(plotData, function (d) {
-              return +d.cluster_variance;
-            })])
+          .domain([0, 1])
           .range([height, 0]);
       svg.append("g")
           .call(d3.axisLeft(y));
-
-      svg.append("text")
-          .attr("transform", "rotate(-90)")
-          .attr("y", 0 - margin.left)
-          .attr("x",0 - (height / 2))
-          .attr("dy", "1em")
-          .style("text-anchor", "middle")
-          .style("font-size", 10)
-          .text("var between clusters");
 
       // Add the line
       svg.append("path")
           .datum(plotData)
           .attr("fill", "none")
-          .attr("stroke", "steelblue")
+          .attr("stroke", "black")
           .attr("stroke-width", 1.5)
           .attr("d", d3.line()
               .x(function (d) {
                 return x(d.wasser_margin * 100)
               })
               .y(function (d) {
-                return y(d.cluster_variance)
+                return y(d.nmi)
               })
           )
+
+      if (0 < plotData[0].skinny_nmi) {
+        // SKINNY
+        svg.append("path")
+            .datum(plotData)
+            .attr("fill", "none")
+            .attr("stroke", "grey")
+            .attr("stroke-width", 1.5)
+            .attr("stroke-dasharray", 5, 5)
+            .attr("d", d3.line()
+                .x(function (d) {
+                  return x(d.wasser_margin * 100)
+                })
+                .y(function (d) {
+                  return y(d.skinny_nmi)
+                })
+            )
+
+        svg.append("text")
+            .data(plotData)
+            .attr("x", function () {
+              return x(plotData[0].wasser_margin * 100) + 5;
+            })
+            .attr("y", function (d) {
+              return y(d.skinny_nmi + 0.06)
+            })
+            .attr("dy", ".30em")
+            .attr("fill", "grey")
+            .text(function () {
+              return "Skinny Dip";
+            });
+      }
+
+      if (0 < plotData[0].ada_nmi) {
+        // ADAWAVE
+        svg.append("path")
+            .datum(plotData)
+            .attr("fill", "none")
+            .attr("stroke", "pink")
+            .attr("stroke-width", 1.5)
+            .attr("stroke-dasharray", 5, 5)
+            .attr("d", d3.line()
+                .x(function (d) {
+                  return x(d.wasser_margin * 100)
+                })
+                .y(function (d) {
+                  return y(d.ada_nmi)
+                })
+            )
+
+        svg.append("text")
+            .data(plotData)
+            .attr("x", function () {
+              return x(plotData[plotData.length - 1].wasser_margin * 100) - 65;
+            })
+            .attr("y", function (d) {
+              return y(d.ada_nmi  + 0.06)
+            })
+            .attr("dy", ".30em")
+            .attr("fill", "pink")
+            .text(function () {
+              return "AdaWave";
+            });
+      }
 
       let store = this.$store;
       svg.append('g')
@@ -98,7 +148,7 @@ export default {
             return x(d.wasser_margin * 100);
           })
           .attr("cy", function (d) {
-            return y(d.cluster_variance);
+            return y(d.nmi);
           })
           .attr("r", function (d) {
             if (d.significant) {
@@ -112,7 +162,7 @@ export default {
               return col_map[2];
             }
 
-            return col_map[0];
+            return col_map[6];
           })
           .attr("id", function (d) {
             return d.identity;
@@ -138,13 +188,12 @@ export default {
                     return col_map[2];
                   }
 
-                  return col_map[0];
+                  return col_map[6];
                 })
           })
           .on("click", function (d) {
             store.commit("varianceDetail", d.target.__data__)
           })
-
     }
   }
 }

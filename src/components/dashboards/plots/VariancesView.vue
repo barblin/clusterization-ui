@@ -1,37 +1,56 @@
 <template>
   <div>
+    <div class="row">
+      <div class="btn-group btn-group-toggle mt-3" data-toggle="buttons">
+        <label class="btn btn-secondary btn-sm" v-bind:class="{ active: $store.getters.isVarsL }"
+               @click="updateLineMode(line_mode.VARIANCE)">
+          <input type="radio" name="options" id="option1"> Variance
+        </label>
+        <label class="btn btn-secondary btn-sm" v-bind:class="{ active: $store.getters.isNmiL }"
+               @click="updateLineMode(line_mode.NMI)">
+          <input type="radio" name="options" id="option2"> NMI
+        </label>
+        <label class="btn btn-secondary btn-sm" v-bind:class="{ active: $store.getters.isDBCVL }"
+               @click="updateLineMode(line_mode.DBCV)">
+          <input type="radio" name="options" id="option3"> DBCV
+        </label>
+        <label class="btn btn-secondary btn-sm" v-bind:class="{ active: $store.getters.isRuntime }"
+               @click="updateLineMode(line_mode.RUNTIME)">
+          <input type="radio" name="options" id="option4"> Runtime
+        </label>
+      </div>
+    </div>
     <div id="accordion" class="plot-menu">
       <div id="my_variance_viz" class="simple-plot"></div>
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-9">
           <div id="my_variance_detail" class="simple-plot"></div>
-          <div v-if="$store.getters.varianceDetail != null">
-            <br>
-            <br>
-            <span>Total vertices clustered: {{ $store.getters.varianceDetail.sum_sz }}</span>
-          </div>
+          <div v-if="$store.getters.varianceDetail != null"></div>
         </div>
         <div class="col-md-3 mt-3">
           <div class="alert alert-dark bg-dark" v-if="$store.getters.varianceDetail != null">
             {{ plot($store.getters.varianceDetail) }}
-            <p v-for="clus in $store.getters.varianceDetail.data" :key="clus.id">
+            <span style="color:white"> NMI: {{$store.getters.varianceDetail.nmi}} </span> <br><br>
+            <span v-for="clus in $store.getters.varianceDetail.data" :key="clus.id">
               <span v-if="clus[0] == -1">
                 <span v-bind:style="{ color: col_map[clus[1]] }">
-                  Noise Cluster / Size: {{ clus[2] }}
-                  <br> W-Sum: {{ clus[4].toFixed(9) }} / W-Var: {{ clus[5].toFixed(9) }}
+                  Noise Cluster -- Size: {{ clus[2] }}
+                  <br> <!-- W-Sum: {{ clus[4].toFixed(9) }} /--> W-Var: {{ clus[5].toFixed(9) }}
                 </span>
               </span>
               <span v-else>
                 <span v-bind:style="{ color: col_map[clus[1]] }">
-                  Cluster: {{ clusn[0] }} / Size: {{ clus[2] }}
-                  <br> W-Sum: {{ clus[4].toFixed(9) }} / W-Var: {{ clus[5].toFixed(9) }}
+                  Cluster: {{ clus[0] }} -- Size: {{ clus[2] }}
+                  <br> <!-- W-Sum: {{ clus[4].toFixed(9) }} /--> W-Var: {{ clus[5].toFixed(9) }}
                 </span>
-              </span>
-            </p>
+              </span> <br><br>
+            </span>
           </div>
         </div>
       </div>
-      <wasserstein-variance-plot :plotData="plotData"></wasserstein-variance-plot>
+      <wasserstein-variance-plot :mode="$store.getters.isVarsL" :plotData="plotData"></wasserstein-variance-plot>
+      <nmi-plot :mode="$store.getters.isNmiL" :plotData="plotData"></nmi-plot>
+      <runtime-plot :mode="$store.getters.isRuntime" :plotData="plotData"></runtime-plot>
     </div>
   </div>
 </template>
@@ -40,22 +59,33 @@
 import * as d3 from "d3";
 import {col_map} from "../../../services/colors";
 import WassersteinVariancePlot from "./utility/WassersteinVariancePlot"
+import NmiPlot from "./utility/NmiPlot"
+import RuntimePlot from "./utility/RuntimePlot"
+import {LINE_GRAPH} from "../../../services/modes";
 
 export default {
   name: "VariancesView",
   props: ['plotData'],
   components: {
     'wasserstein-variance-plot': WassersteinVariancePlot,
+    'nmi-plot': NmiPlot,
+    'runtime-plot': RuntimePlot
   },
   data() {
     return {
       col_map: col_map,
+      line_mode: LINE_GRAPH,
     }
   },
   mounted() {
     this.$store.commit("varianceDetail", null)
+    this.$store.commit("lineGraphMode", LINE_GRAPH.VARIANCE)
   },
   methods: {
+    updateLineMode: function (mode) {
+      this.$store.commit("lineGraphMode", mode)
+      this.$store.commit("varianceDetail", null)
+    },
     plot: function (plotData) {
       d3.selectAll("#var-det").remove()
 

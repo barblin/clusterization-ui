@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {PROGRESS} from "../services/progress";
+import {LINE_GRAPH} from "../services/modes";
 
 Vue.use(Vuex)
 
@@ -12,8 +13,9 @@ export const store = new Vuex.Store({
         fileSel: "Select File",
         numClusters: 6,
         wasserDist: 1,
-        stdvMultiplier: 2,
+        stdvMultiplier: 1.9,
         checked: false,
+        lineGraphMode: LINE_GRAPH.VARIANCE,
 
         varsFrom: 0.00,
         varsUntil: 2,
@@ -70,6 +72,9 @@ export const store = new Vuex.Store({
         },
         varianceDetail(state, detail) {
             state.varianceDetail = detail
+        },
+        lineGraphMode(state, mode) {
+            state.lineGraphMode = mode
         }
     },
     getters: {
@@ -100,6 +105,13 @@ export const store = new Vuex.Store({
         isClusterWasser: state => state.viewSel.valueOf() === PROGRESS.CLUSTER_WASSER.valueOf(),
         isMulti: state => state.viewSel.valueOf() === PROGRESS.MULTI.valueOf(),
         isVars: state => state.viewSel.valueOf() === PROGRESS.VARIANCES.valueOf(),
+
+        isVarsL: state => state.lineGraphMode.valueOf() === LINE_GRAPH.VARIANCE.valueOf(),
+        isNmiL: state => state.lineGraphMode.valueOf() === LINE_GRAPH.NMI.valueOf(),
+        isDBCVL: state => state.lineGraphMode.valueOf() === LINE_GRAPH.DBCV.valueOf(),
+        isRuntime: state => state.lineGraphMode.valueOf() === LINE_GRAPH.RUNTIME.valueOf(),
+
+        lineGraphMode: state => state.lineGraphMode,
 
         isPSimple: state => state.viewSel.valueOf() === PROGRESS.SIMPLE_PLOT.valueOf() ||
             state.viewSel.valueOf() === PROGRESS.DELAUNAY.valueOf() ||
