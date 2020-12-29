@@ -1,19 +1,12 @@
 <template>
   <div>
-    <div class="alert alert-dark">
-      <label class="mt-1" for="wasser-dist">W(v,u) - margin from min W</label>
-      <br>
-      <span class="badge font-size-md">{{ wasserDist }} %</span>
-      <input type="range" min="0" max="5" step="0.01" class="form-control-range slider" v-model="wasserDist"
-             id="wasser-dist">
-    </div>
-    <div class="alert alert-dark">
+    <div class="alert alert-dark slider">
       <label class="form-check-label mt-1">Remove outlier</label>
       <input type="checkbox" class="form-check-input mt-2" id="outliers" v-model="checked">
       <br>
       <span v-if="checked">
           <span class="badge font-size-md"> σ *  {{ stdvMultiplier }}</span>
-          <input type="range" min="0" max="2" step="0.1" class="form-control-range slider" v-model="stdvMultiplier"
+          <input type="range" min="0" max="2" step="0.1" class="form-control-range" v-model="stdvMultiplier"
                  id="stdv-dist">
       </span>
     </div>
@@ -22,18 +15,14 @@
 
 <script>
 export default {
-  name: "sliders",
+  name: "OutlierSlider",
   data() {
     return {
-      wasserDist: this.$store.getters.wasserDist,
       checked: this.$store.getters.checked,
       stdvMultiplier: this.$store.getters.stdvMultiplier
     }
   },
   watch: {
-    wasserDist: function (val) {
-      this.$store.commit("updateWasserDist", val)
-    },
     checked: function (val) {
       this.$store.commit("updateChecked", val)
     },
@@ -51,7 +40,7 @@ export default {
 }
 
 .slider {
-  width: 230px;
+  width: 250px;
 }
 
 .font-size-md {

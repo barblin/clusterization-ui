@@ -58,6 +58,10 @@ export const PlotState = {
         return this.isWasser() || this.isCluster();
     },
 
+    isOutlierSlider() {
+        return this.isWasser() || this.isCluster() || this.isVariancesView();
+    },
+
     isCluster() {
         if (this.isMultiView()) {
             return true;

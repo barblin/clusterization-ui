@@ -52,7 +52,7 @@ export default {
 }
 
 .slider {
-  width: 230px;
+  width: 250px;
 }
 
 </style>

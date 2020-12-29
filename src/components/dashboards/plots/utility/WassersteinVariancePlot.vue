@@ -89,6 +89,8 @@ export default {
           )
 
       let store = this.$store;
+      store.commit("overallTime", plotData[plotData.length - 1].overall_time)
+
       svg.append('g')
           .selectAll("dot")
           .data(plotData)

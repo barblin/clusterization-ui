@@ -16,7 +16,8 @@
         </label>
         <label class="btn btn-secondary btn-sm" v-bind:class="{ active: $store.getters.isRuntime }"
                @click="updateLineMode(line_mode.RUNTIME)">
-          <input type="radio" name="options" id="option4"> Runtime
+          <input type="radio" name="options" id="option4">
+              Runtime <span class="badge badge-success">{{$store.getters.overallTime}} sec.</span>
         </label>
       </div>
     </div>
@@ -75,6 +76,7 @@ export default {
     return {
       col_map: col_map,
       line_mode: LINE_GRAPH,
+      overall_time: 0
     }
   },
   mounted() {

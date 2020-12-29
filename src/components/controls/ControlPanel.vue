@@ -14,13 +14,15 @@
     <div class="row plot-menu ">
       <view-file-selection></view-file-selection>
     </div>
-    <div class="row plot-menu"><span v-if="plotState.isWasserCluster()"><sliders></sliders></span></div>
+    <div class="row plot-menu"><span v-if="plotState.isWasserCluster()"><wasser-sliders></wasser-sliders></span></div>
+    <div class="row plot-menu"><span v-if="plotState.isOutlierSlider()"><outlier-sliders></outlier-sliders></span></div>
     <div class="row plot-menu" v-if="$store.getters.isVars">
       <vars-sliders></vars-sliders>
     </div>
     <div class="row plot-menu">
       <div class="mt-4">
-        <button type="button" class="btn btn-primary" :disabled="$store.getters.fileSel == 'Select File'"
+        <button type="button" class="btn btn-primary slider"
+                :disabled="$store.getters.fileSel == 'Select File' || $store.getters.loading"
                 @click="loadData">Plot
         </button>
       </div>
@@ -44,13 +46,19 @@
         }}
       </div>
     </div>
+    <div v-if="$store.getters.isClusterWasser" class="row plot-menu">
+      <div class="badge badge-success">
+        <span class="badge badge-success">Total {{$store.getters.overallTime}} sec.</span>
+      </div>
+    </div>
   </div>
 
 </template>
 
 <script>
 import {updatePlot} from "../../services/datasource";
-import Sliders from "@/components/controls/Modifier";
+import OutlierSlider from "@/components/controls/OutlierSlider";
+import WasserSlider from "@/components/controls/WasserSlider";
 import VarsSliders from "@/components/controls/VarsSlider";
 import ViewAndFileSelection from "@/components/controls/Selectors";
 import {PlotState} from "../../services/plot-state";
@@ -58,7 +66,8 @@ import {PlotState} from "../../services/plot-state";
 export default {
   name: "ControlPanel",
   components: {
-    'sliders': Sliders,
+    'outlier-sliders': OutlierSlider,
+    'wasser-sliders': WasserSlider,
     'vars-sliders': VarsSliders,
     'view-file-selection': ViewAndFileSelection
   },
@@ -83,12 +92,15 @@ export default {
 }
 
 .full-width {
-  width: 100%;
-  margin-right: 4rem;
+  width: 250px;
   text-align: center;
 }
 
 .sidebar-background {
   height: 100%;
+}
+
+.slider {
+  width: 250px;
 }
 </style>

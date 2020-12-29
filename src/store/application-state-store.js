@@ -26,6 +26,7 @@ export const store = new Vuex.Store({
         height: 800,
 
         varianceDetail: null,
+        overallTime: 0
     },
     mutations: {
         updateLoading(state, isLoading) {
@@ -75,6 +76,9 @@ export const store = new Vuex.Store({
         },
         lineGraphMode(state, mode) {
             state.lineGraphMode = mode
+        },
+        overallTime(state, time){
+            state.overallTime = time.toFixed(9)
         }
     },
     getters: {
@@ -112,6 +116,8 @@ export const store = new Vuex.Store({
         isRuntime: state => state.lineGraphMode.valueOf() === LINE_GRAPH.RUNTIME.valueOf(),
 
         lineGraphMode: state => state.lineGraphMode,
+
+        overallTime: state => state.overallTime,
 
         isPSimple: state => state.viewSel.valueOf() === PROGRESS.SIMPLE_PLOT.valueOf() ||
             state.viewSel.valueOf() === PROGRESS.DELAUNAY.valueOf() ||

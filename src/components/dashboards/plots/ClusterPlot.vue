@@ -11,6 +11,8 @@ export default {
   props: ['plotData'],
   watch: {
     plotData: function (plotData) {
+      this.$store.commit("overallTime", plotData.overall_time)
+
       const margin = {top: 10, right: 30, bottom: 30, left: 30},
           width = this.$store.getters.width - margin.left - margin.right,
           height = this.$store.getters.height - margin.top - margin.bottom;

@@ -126,7 +126,7 @@ export default {
         svg.append("text")
             .data(plotData)
             .attr("x", function () {
-              return x(plotData[plotData.length - 1].wasser_margin * 100) - 65;
+              return x(plotData[plotData.length - 1].wasser_margin * 100) - 70;
             })
             .attr("y", function (d) {
               return y(d.ada_nmi  + 0.06)
