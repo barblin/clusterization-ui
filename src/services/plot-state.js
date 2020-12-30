@@ -44,7 +44,7 @@ export const PlotState = {
     },
 
     isWasser() {
-        if (store.getters.isClusterWasser || store.getters.isMinTreeWasser) {
+        if (store.getters.isClusterWasser) {
             store.commit('width', 1500)
             store.commit('height', 800)
 
@@ -56,10 +56,6 @@ export const PlotState = {
 
     isWasserCluster() {
         return this.isWasser() || this.isCluster();
-    },
-
-    isOutlierSlider() {
-        return this.isWasser() || this.isCluster() || this.isVariancesView();
     },
 
     isCluster() {

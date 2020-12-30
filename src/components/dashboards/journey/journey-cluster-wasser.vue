@@ -56,7 +56,7 @@ export default {
       this.$store.commit('updateClusters', 9)
       this.$store.commit('updateWasserDist', 1.42)
       this.$store.commit('updateStdvMultiplier', 1.9)
-      this.$store.commit('updateChecked', false)
+      this.$store.commit('updateChecked', true)
       this.$store.commit('width', 350)
       this.$store.commit('height', 300)
     }

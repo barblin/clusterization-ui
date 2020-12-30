@@ -17,32 +17,34 @@
         <label class="btn btn-secondary btn-sm" v-bind:class="{ active: $store.getters.isRuntime }"
                @click="updateLineMode(line_mode.RUNTIME)">
           <input type="radio" name="options" id="option4">
-              Runtime <span class="badge badge-success">{{$store.getters.overallTime}} sec.</span>
+          Runtime <span class="badge badge-success">{{ $store.getters.overallTime }} sec.</span>
         </label>
       </div>
     </div>
     <div id="accordion" class="plot-menu">
       <div id="my_variance_viz" class="simple-plot"></div>
       <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-8">
           <div id="my_variance_detail" class="simple-plot"></div>
           <div v-if="$store.getters.varianceDetail != null"></div>
         </div>
-        <div class="col-md-3 mt-3">
-          <div class="alert alert-dark bg-dark" v-if="$store.getters.varianceDetail != null">
+        <div class="col-md-4 mt-3">
+          <div class="alert alert-dark bg-dark float-right" v-if="$store.getters.varianceDetail != null">
             {{ plot($store.getters.varianceDetail) }}
-            <span style="color:white"> NMI: {{$store.getters.varianceDetail.nmi}} </span> <br><br>
+            <span style="color:white"> NMI: {{ $store.getters.varianceDetail.nmi }} </span> <br>
+            <span style="color:white"> W(v,u): {{ $store.getters.varianceDetail.wasser_margin * 100 }} </span> <br>
+            <span style="color:white"> Amount: {{ $store.getters.varianceDetail.sum_sz }} </span> <br><br>
             <span v-for="clus in $store.getters.varianceDetail.data" :key="clus.id">
               <span v-if="clus[0] == -1">
                 <span v-bind:style="{ color: col_map[clus[1]] }">
-                  Noise Cluster -- Size: {{ clus[2] }}
-                  <br> <!-- W-Sum: {{ clus[4].toFixed(9) }} /--> W-Var: {{ clus[5].toFixed(9) }}
+                  Noise Cluster - Size: {{ clus[2] }} -
+                  <!-- W-Sum: {{ clus[4].toFixed(9) }} /--> W-Var: {{ clus[5].toFixed(9) }}
                 </span>
               </span>
               <span v-else>
                 <span v-bind:style="{ color: col_map[clus[1]] }">
-                  Cluster: {{ clus[0] }} -- Size: {{ clus[2] }}
-                  <br> <!-- W-Sum: {{ clus[4].toFixed(9) }} /--> W-Var: {{ clus[5].toFixed(9) }}
+                  Cluster: {{ clus[0] }} - Size: {{ clus[2] }} -
+                  <!-- W-Sum: {{ clus[4].toFixed(9) }} /--> W-Var: {{ clus[5].toFixed(9) }}
                 </span>
               </span> <br><br>
             </span>
@@ -82,6 +84,11 @@ export default {
   mounted() {
     this.$store.commit("varianceDetail", null)
     this.$store.commit("lineGraphMode", LINE_GRAPH.VARIANCE)
+  },
+  watch: {
+    plotData: function (plotData) {
+      this.$store.commit("overallTime", plotData[plotData.length - 1].overall_time)
+    }
   },
   methods: {
     updateLineMode: function (mode) {

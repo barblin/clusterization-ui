@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {PROGRESS} from "../services/progress";
 import {LINE_GRAPH} from "../services/modes";
+import * as d3 from "d3";
 
 Vue.use(Vuex)
 
@@ -14,7 +15,7 @@ export const store = new Vuex.Store({
         numClusters: 6,
         wasserDist: 1,
         stdvMultiplier: 1.9,
-        checked: false,
+        checked: true,
         lineGraphMode: LINE_GRAPH.VARIANCE,
 
         varsFrom: 0.00,
@@ -39,6 +40,7 @@ export const store = new Vuex.Store({
             state.plotData = data
         },
         updateViewSel(state, viewSel) {
+            d3.selectAll("svg").remove()
             state.viewSel = viewSel
         },
         updateFileSel(state, fileSel) {
@@ -77,7 +79,7 @@ export const store = new Vuex.Store({
         lineGraphMode(state, mode) {
             state.lineGraphMode = mode
         },
-        overallTime(state, time){
+        overallTime(state, time) {
             state.overallTime = time.toFixed(9)
         }
     },

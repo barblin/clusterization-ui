@@ -15,7 +15,6 @@
       <view-file-selection></view-file-selection>
     </div>
     <div class="row plot-menu"><span v-if="plotState.isWasserCluster()"><wasser-sliders></wasser-sliders></span></div>
-    <div class="row plot-menu"><span v-if="plotState.isOutlierSlider()"><outlier-sliders></outlier-sliders></span></div>
     <div class="row plot-menu" v-if="$store.getters.isVars">
       <vars-sliders></vars-sliders>
     </div>
@@ -57,7 +56,6 @@
 
 <script>
 import {updatePlot} from "../../services/datasource";
-import OutlierSlider from "@/components/controls/OutlierSlider";
 import WasserSlider from "@/components/controls/WasserSlider";
 import VarsSliders from "@/components/controls/VarsSlider";
 import ViewAndFileSelection from "@/components/controls/Selectors";
@@ -66,7 +64,6 @@ import {PlotState} from "../../services/plot-state";
 export default {
   name: "ControlPanel",
   components: {
-    'outlier-sliders': OutlierSlider,
     'wasser-sliders': WasserSlider,
     'vars-sliders': VarsSliders,
     'view-file-selection': ViewAndFileSelection

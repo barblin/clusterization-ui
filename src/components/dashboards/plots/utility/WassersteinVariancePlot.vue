@@ -25,7 +25,7 @@ export default {
     plot: function (plotData) {
       d3.selectAll("svg").remove()
 
-      const margin = {top: 5, right: 10, bottom: 30, left: 35},
+      const margin = {top: 5, right: 10, bottom: 30, left: 50},
           width = 1500 - margin.left - margin.right,
           height = 200 - margin.top - margin.bottom;
 
@@ -89,7 +89,6 @@ export default {
           )
 
       let store = this.$store;
-      store.commit("overallTime", plotData[plotData.length - 1].overall_time)
 
       svg.append('g')
           .selectAll("dot")

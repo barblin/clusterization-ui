@@ -2,9 +2,9 @@ export let PROGRESS = {
     START: 'start',
     SIMPLE_PLOT: 'simple-plots',
     DELAUNAY: 'delaunay-triangulation',
-    MIN_TREE: 'minimum-spanning-tree',
-    MIN_TREE_WASSER: 'minimum-spanning-tree-wasser',
-    CLUSTER_WASSER: 'clusters-min-tree-wasser',
-    MULTI: 'multi-plots',
-    VARIANCES: 'variances-plots'
+    MIN_TREE: 'min-span-tree',
+    MIN_TREE_WASSER: 'min-span-tree-wasser',
+    CLUSTER_WASSER: 'cluster',
+    MULTI: 'cluster-compare',
+    VARIANCES: 'scores'
 }
