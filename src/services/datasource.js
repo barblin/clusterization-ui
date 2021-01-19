@@ -12,8 +12,6 @@ export function updatePlot() {
         + "/files/" + store.getters.fileSel
         + "?numClusters=" + store.getters.clusters
         + "&wasserError=" + store.getters.wasserDist / 100
-        + "&remOutliers=" + store.getters.checked
-        + "&stdvMultiplier=" + store.getters.stdvMultiplier
         + "&varsFrom=" + store.getters.varsFrom / 100
         + "&varsUntil=" + store.getters.varsUntil / 100
         + "&varsStepSize=" + store.getters.varsStepSize / 100)

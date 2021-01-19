@@ -4,7 +4,7 @@
       <label class="mt-1" for="wasser-dist">W(v,u) - margin from min W</label>
       <br>
       <span class="badge font-size-md">{{ wasserDist }} %</span>
-      <input type="range" min="0" max="5" step="0.01" class="form-control-range" v-model="wasserDist"
+      <input type="range" min="0" max="10" step="0.01" class="form-control-range" v-model="wasserDist"
              id="wasser-dist">
     </div>
   </div>
