@@ -14,8 +14,6 @@ export const store = new Vuex.Store({
         fileSel: "Select File",
         numClusters: 6,
         wasserDist: 1,
-        stdvMultiplier: 1.9,
-        checked: true,
         lineGraphMode: LINE_GRAPH.VARIANCE,
 
         varsFrom: 0.00,
@@ -52,12 +50,6 @@ export const store = new Vuex.Store({
         updateWasserDist(state, wasserDist) {
             state.wasserDist = wasserDist
         },
-        updateStdvMultiplier(state, stdvMultiplier) {
-            state.stdvMultiplier = stdvMultiplier
-        },
-        updateChecked(state, checked) {
-            state.checked = checked
-        },
         updateVarsFrom(state, from) {
             state.varsFrom = from
         },
@@ -91,8 +83,6 @@ export const store = new Vuex.Store({
         fileSel: state => state.fileSel,
         clusters: state => state.numClusters,
         wasserDist: state => state.wasserDist,
-        stdvMultiplier: state => state.stdvMultiplier,
-        checked: state => state.checked,
 
         varsFrom: state => state.varsFrom,
         varsUntil: state => state.varsUntil,
