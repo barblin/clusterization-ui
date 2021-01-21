@@ -5,18 +5,19 @@
 <script>
 import * as d3 from "d3";
 import {col_map} from "@/services/colors";
+import {getVariancePlot} from "@/services/datasource";
 
 export default {
   name: "WassersteinVariancePlot",
   props: ['mode', 'plotData'],
   watch: {
-    plotData: function (plotData){
-      if(this.mode){
+    plotData: function (plotData) {
+      if (this.mode) {
         this.plot(plotData)
       }
     },
-    mode: function(mode){
-      if(mode) {
+    mode: function (mode) {
+      if (mode) {
         this.plot(this.$store.getters.plotData)
       }
     }
@@ -46,7 +47,7 @@ export default {
 
       svg.append("text")
           .attr("transform",
-              "translate(" + (width/2) + " ," +
+              "translate(" + (width / 2) + " ," +
               (height + margin.top + 20) + ")")
           .style("text-anchor", "middle")
           .style("font-size", 10)
@@ -67,7 +68,7 @@ export default {
       svg.append("text")
           .attr("transform", "rotate(-90)")
           .attr("y", 0 - margin.left)
-          .attr("x",0 - (height / 2))
+          .attr("x", 0 - (height / 2))
           .attr("dy", "1em")
           .style("text-anchor", "middle")
           .style("font-size", 10)
@@ -143,7 +144,8 @@ export default {
                 })
           })
           .on("click", function (d) {
-            store.commit("varianceDetail", d.target.__data__)
+            store.commit("updatePlotIdentity", d.target.__data__.identity)
+            getVariancePlot()
           })
 
     }

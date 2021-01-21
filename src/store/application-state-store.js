@@ -12,6 +12,7 @@ export const store = new Vuex.Store({
         errored: false,
         viewSel: PROGRESS.SIMPLE_PLOT,
         fileSel: "Select File",
+        plotIdentity: "",
         numClusters: 6,
         wasserDist: 1,
         lineGraphMode: LINE_GRAPH.VARIANCE,
@@ -43,6 +44,9 @@ export const store = new Vuex.Store({
         },
         updateFileSel(state, fileSel) {
             state.fileSel = fileSel
+        },
+        updatePlotIdentity(state, plotIdentity) {
+            state.plotIdentity = plotIdentity
         },
         updateClusters(state, clusters) {
             state.numClusters = clusters
@@ -81,6 +85,7 @@ export const store = new Vuex.Store({
         plotData: state => state.plotData,
         viewSel: state => state.viewSel,
         fileSel: state => state.fileSel,
+        plotIdentity: state => state.plotIdentity,
         clusters: state => state.numClusters,
         wasserDist: state => state.wasserDist,
 

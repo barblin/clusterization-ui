@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <control-panel></control-panel>
-    <div class="col-lg-9">
+    <div class="col-lg-10">
       <tri-plot v-if="plotState.isDelaunay()" :plotData="$store.getters.plotData"></tri-plot>
       <simple-plot v-else-if="plotState.isScatter()" :plotData="$store.getters.plotData"></simple-plot>
       <cluster-plot v-else-if="plotState.isClusterWasser()" :plotData="$store.getters.plotData"></cluster-plot>

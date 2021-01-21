@@ -29,7 +29,7 @@
           <div v-if="$store.getters.varianceDetail != null"></div>
         </div>
         <div class="col-md-4 mt-3">
-          <div class="alert alert-dark bg-dark float-right" v-if="$store.getters.varianceDetail != null">
+          <div class="alert alert-dark bg-dark mr-5" v-if="$store.getters.varianceDetail != null">
             {{ plot($store.getters.varianceDetail) }}
             <span style="color:white"> NMI: {{ $store.getters.varianceDetail.nmi }} </span> <br>
             <span style="color:white"> W(v,u): {{ $store.getters.varianceDetail.wasser_margin * 100 }} </span> <br>

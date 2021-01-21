@@ -5,6 +5,7 @@
 <script>
 import * as d3 from "d3";
 import {col_map} from "@/services/colors";
+import {getVariancePlot} from "@/services/datasource";
 
 export default {
   name: "NmiPlot",
@@ -192,7 +193,8 @@ export default {
                 })
           })
           .on("click", function (d) {
-            store.commit("varianceDetail", d.target.__data__)
+            store.commit("updatePlotIdentity", d.target.__data__.identity)
+            getVariancePlot()
           })
     }
   }
