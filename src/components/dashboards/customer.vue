@@ -36,7 +36,7 @@
     <journey-tree-plot v-else-if="$store.getters.isMinTree"></journey-tree-plot>
     <journey-tree-wasser-plot v-else-if="$store.getters.isMinTreeWasser"></journey-tree-wasser-plot>
     <journey-cluster-wasser-plot v-else-if="$store.getters.isClusterWasser"></journey-cluster-wasser-plot>
-    <journey-multi-plot v-else-if="$store.getters.isMulti"></journey-multi-plot>
+    <journey-vars-plot v-else-if="$store.getters.isVars"></journey-vars-plot>
   </div>
 </template>
 
@@ -46,7 +46,7 @@ import JourneyTriPlot from "@/components/dashboards/journey/journey-delaunay";
 import JourneyTreePlot from "@/components/dashboards/journey/journey-tree";
 import JourneyTreeWasserPlot from "@/components/dashboards/journey/journey-tree-wasser";
 import JourneyClusterWasserPlot from "@/components/dashboards/journey/journey-cluster-wasser";
-import JourneyMultiPlot from "@/components/dashboards/journey/journey-multi";
+import JourneyVarsPlot from "@/components/dashboards/journey/journey-analysis";
 import {PROGRESS} from "../../services/progress";
 
 export default {
@@ -66,7 +66,7 @@ export default {
     'journey-tree-plot': JourneyTreePlot,
     'journey-tree-wasser-plot': JourneyTreeWasserPlot,
     'journey-cluster-wasser-plot': JourneyClusterWasserPlot,
-    'journey-multi-plot': JourneyMultiPlot,
+    'journey-vars-plot': JourneyVarsPlot,
   },
   methods: {
     simplePlot(){

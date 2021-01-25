@@ -3,7 +3,7 @@
     <div class="block">
       <div class="row">
         <div class="col-md-6">
-          <div class="content-heading"><h3>Results</h3></div>
+          <div class="content-heading"><h3>Results and Analysis</h3></div>
           <p>As you can see, and as you will be able to explore in pro-mode, our algorithm is able to create clusters
           from any of multiple different input files. The clustering algorithm just requires a maximum Wasserstein Distance
           as input parameter, to create clusters that resemble the original pretty much.</p>
@@ -29,15 +29,11 @@
 </template>
 
 <script>
-import Plot from "@/components/dashboards/plots/Multiview";
 import {updatePlot} from "../../../services/datasource";
 import {PROGRESS} from "@/services/progress";
 
 export default {
   name: "journey-simple-plot",
-  components: {
-    'plot': Plot,
-  },
   data() {
     return {
       plotData: {},
@@ -51,7 +47,6 @@ export default {
   methods: {
     click (){
       this.$store.commit('updateViewSel', PROGRESS.START)
-      this.$store.commit('updateClusters', 9)
       this.$store.commit('updateWasserDist', 1.42)
       this.$store.commit('width', 500)
       this.$store.commit('height', 400)

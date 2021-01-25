@@ -10,8 +10,7 @@ export function updatePlot() {
 
     axios.get(host + "views/" + store.getters.viewSel
         + "/files/" + store.getters.fileSel
-        + "?numClusters=" + store.getters.clusters
-        + "&wasserError=" + store.getters.wasserDist / 100
+        + "?wasserError=" + store.getters.wasserDist / 100
         + "&varsFrom=" + store.getters.varsFrom / 100
         + "&varsUntil=" + store.getters.varsUntil / 100
         + "&varsStepSize=" + store.getters.varsStepSize / 100)

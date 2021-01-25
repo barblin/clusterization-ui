@@ -27,27 +27,9 @@
       </div>
     </div>
     <br>
-    <div v-if="$store.getters.isMulti && $store.getters.plotData.clustered_points" class="row plot-menu">
-      <div class="badge badge-success">
-        Clustered vertices: {{ $store.getters.plotData.clustered_points }}
-      </div>
-    </div>
-    <div v-if="$store.getters.isMulti && $store.getters.plotData.clustered_points_match" class="row plot-menu">
-      <div class="badge badge-success">
-        Matched vetices: {{ $store.getters.plotData.clustered_points_match }}
-      </div>
-    </div>
-    <div v-if="$store.getters.isMulti && $store.getters.plotData.clustered_points_match" class="row plot-menu">
-      <div class="badge badge-success">
-        Match in % : {{
-          Math.round($store.getters.plotData.clustered_points_match /
-              $store.getters.plotData.clustered_points * 100)
-        }}
-      </div>
-    </div>
     <div v-if="$store.getters.isClusterWasser" class="row plot-menu">
       <div class="badge badge-success">
-        <span class="badge badge-success">Total {{$store.getters.overallTime}} sec.</span>
+        <span class="badge badge-success">Total {{ $store.getters.overallTime }} sec.</span>
       </div>
     </div>
   </div>

@@ -5,6 +5,5 @@ export let PROGRESS = {
     MIN_TREE: 'min-span-tree',
     MIN_TREE_WASSER: 'min-span-tree-wasser',
     CLUSTER_WASSER: 'cluster',
-    MULTI: 'cluster-compare',
     VARIANCES: 'scores'
 }

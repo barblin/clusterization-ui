@@ -13,7 +13,6 @@ export const store = new Vuex.Store({
         viewSel: PROGRESS.SIMPLE_PLOT,
         fileSel: "Select File",
         plotIdentity: "",
-        numClusters: 6,
         wasserDist: 1,
         lineGraphMode: LINE_GRAPH.VARIANCE,
 
@@ -47,9 +46,6 @@ export const store = new Vuex.Store({
         },
         updatePlotIdentity(state, plotIdentity) {
             state.plotIdentity = plotIdentity
-        },
-        updateClusters(state, clusters) {
-            state.numClusters = clusters
         },
         updateWasserDist(state, wasserDist) {
             state.wasserDist = wasserDist
@@ -86,7 +82,6 @@ export const store = new Vuex.Store({
         viewSel: state => state.viewSel,
         fileSel: state => state.fileSel,
         plotIdentity: state => state.plotIdentity,
-        clusters: state => state.numClusters,
         wasserDist: state => state.wasserDist,
 
         varsFrom: state => state.varsFrom,
@@ -104,7 +99,6 @@ export const store = new Vuex.Store({
         isMinTree: state => state.viewSel.valueOf() === PROGRESS.MIN_TREE.valueOf(),
         isMinTreeWasser: state => state.viewSel.valueOf() === PROGRESS.MIN_TREE_WASSER.valueOf(),
         isClusterWasser: state => state.viewSel.valueOf() === PROGRESS.CLUSTER_WASSER.valueOf(),
-        isMulti: state => state.viewSel.valueOf() === PROGRESS.MULTI.valueOf(),
         isVars: state => state.viewSel.valueOf() === PROGRESS.VARIANCES.valueOf(),
 
         isVarsL: state => state.lineGraphMode.valueOf() === LINE_GRAPH.VARIANCE.valueOf(),
@@ -121,26 +115,26 @@ export const store = new Vuex.Store({
             state.viewSel.valueOf() === PROGRESS.MIN_TREE.valueOf() ||
             state.viewSel.valueOf() === PROGRESS.MIN_TREE_WASSER.valueOf() ||
             state.viewSel.valueOf() === PROGRESS.CLUSTER_WASSER.valueOf() ||
-            state.viewSel.valueOf() === PROGRESS.MULTI.valueOf(),
+            state.viewSel.valueOf() === PROGRESS.VARIANCES.valueOf(),
         isPDelaunay: state =>
             state.viewSel.valueOf() === PROGRESS.DELAUNAY.valueOf() ||
             state.viewSel.valueOf() === PROGRESS.MIN_TREE.valueOf() ||
             state.viewSel.valueOf() === PROGRESS.MIN_TREE_WASSER.valueOf() ||
             state.viewSel.valueOf() === PROGRESS.CLUSTER_WASSER.valueOf() ||
-            state.viewSel.valueOf() === PROGRESS.MULTI.valueOf(),
+            state.viewSel.valueOf() === PROGRESS.VARIANCES.valueOf(),
         isPMinTree: state =>
             state.viewSel.valueOf() === PROGRESS.MIN_TREE.valueOf() ||
             state.viewSel.valueOf() === PROGRESS.MIN_TREE_WASSER.valueOf() ||
             state.viewSel.valueOf() === PROGRESS.CLUSTER_WASSER.valueOf() ||
-            state.viewSel.valueOf() === PROGRESS.MULTI.valueOf(),
+            state.viewSel.valueOf() === PROGRESS.VARIANCES.valueOf(),
         isPMinTreeWasser: state =>
             state.viewSel.valueOf() === PROGRESS.MIN_TREE_WASSER.valueOf() ||
             state.viewSel.valueOf() === PROGRESS.CLUSTER_WASSER.valueOf() ||
-            state.viewSel.valueOf() === PROGRESS.MULTI.valueOf(),
+            state.viewSel.valueOf() === PROGRESS.VARIANCES.valueOf(),
         isPClusterWasser: state =>
             state.viewSel.valueOf() === PROGRESS.CLUSTER_WASSER.valueOf() ||
-            state.viewSel.valueOf() === PROGRESS.MULTI.valueOf(),
-        isPMulti: state =>
-            state.viewSel.valueOf() === PROGRESS.MULTI.valueOf(),
+            state.viewSel.valueOf() === PROGRESS.VARIANCES.valueOf(),
+        isPVar: state =>
+            state.viewSel.valueOf() === PROGRESS.VARIANCES.valueOf(),
     }
 })

@@ -50,7 +50,6 @@ export default {
   methods: {
     click (){
       this.$store.commit('updateViewSel', PROGRESS.MIN_TREE)
-      this.$store.commit('updateClusters', 1)
     }
   }
 }

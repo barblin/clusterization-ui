@@ -11,7 +11,7 @@
            style="width: 15%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">Minimum Spanning Tree by water distance</div>
       <div v-if="$store.getters.isPClusterWasser" class="progress-bar bg-success rounded-0" role="progressbar"
            style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">Sort by distance and cluster by water distance</div>
-      <div v-if="$store.getters.isPMulti" class="progress-bar bg-dark rounded-0" role="progressbar" style="width: 15%"
+      <div v-if="$store.getters.isPVar" class="progress-bar bg-dark rounded-0" role="progressbar" style="width: 15%"
            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">Compare to original plot</div>
     </div>
   </div>

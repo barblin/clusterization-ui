@@ -59,10 +59,6 @@ export const PlotState = {
     },
 
     isCluster() {
-        if (this.isMultiView()) {
-            return true;
-        }
-
         if (store.getters.isClusterWasser) {
             store.commit('width', 1500)
             store.commit('height', 800)
@@ -71,15 +67,6 @@ export const PlotState = {
         }
 
         return false;
-    },
-
-    isMultiView() {
-        if (store.getters.isMulti) {
-            store.commit('width', 580)
-            store.commit('height', 430)
-        }
-
-        return store.getters.isMulti
     },
 
     isVariancesView() {

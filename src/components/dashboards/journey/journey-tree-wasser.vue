@@ -56,7 +56,6 @@ export default {
   methods: {
     click (){
       this.$store.commit('updateViewSel', PROGRESS.CLUSTER_WASSER)
-      this.$store.commit('updateClusters', 9)
       this.$store.commit('updateWasserDist', 1.42)
       this.$store.commit('width', 500)
       this.$store.commit('height', 400)
