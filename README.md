@@ -30,7 +30,7 @@ Start frontend, ready to go
 * Line plot of minimum spanning tree produced from the delaunay triangulation graph
   ![Clustering result for waveData_5.csv (50% noise)](ressources/imgs/waveData_5_min_tree.png)
 * Line plot of minimum spanning tree based on the Wasserstein distance
-  ![Clustering result for waveData_5.csv (50% noise)](ressources/imgs/waveData_5_min_tree.png)
+  ![Clustering result for waveData_5.csv (50% noise)](ressources/imgs/waveData_5_wasser_tree.png)
 * Range plot, to generate clusters for different values between a given range
   ![Clustering result for waveData_5.csv (50% noise)](ressources/imgs/waveData_5_wasser_range.png)
 
