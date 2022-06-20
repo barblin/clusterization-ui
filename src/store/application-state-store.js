@@ -1,12 +1,9 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
 import {PROGRESS} from "../services/progress";
 import {LINE_GRAPH} from "../services/modes";
 import * as d3 from "d3";
+import {createStore} from 'vuex'
 
-Vue.use(Vuex)
-
-export const store = new Vuex.Store({
+export const store = createStore({
     state: {
         loading: false,
         errored: false,

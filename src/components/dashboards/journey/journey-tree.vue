@@ -7,7 +7,7 @@
           <p>This is definitely a good looking tree!</p>
           <p>This tree is based on the triangulation data from before. We simply performed a custom Kruskal Algorithm
             on the data. Why is that import? Well the Kruskal Algorithm will actually be used to create
-          different clusters at a later point. These unions for the clusters will depend on a maximum Wasserstein Distance.
+            different clusters at a later point. These unions for the clusters will depend on a maximum Wasserstein Distance.</p>
           <p>Like that, we can control with input parameters how many clusters we want to have and what the criteria
         for the clusters will be. Based on these input parameters, we will sort the edges by cost of travelling
         between source and destination. But the decision if a vertex will join a cluster, is based on a maximum
