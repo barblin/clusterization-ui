@@ -4,7 +4,7 @@
 
 ## Quickstart
 
-Please clone the Debian/Ubuntu setup guide (It's very short, I promise :) )
+Please clone the Debian/Ubuntu setup guide.
 https://github.com/barblin/clusterizer-setup-debian-ubuntu
 
 Currently, only supported for Debian/Ubuntu.
